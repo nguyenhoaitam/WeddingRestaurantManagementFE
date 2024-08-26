@@ -1,0 +1,15 @@
+:root {
+  --primary-color: #007bff; /* Màu chính */
+  --secondary-color: #6c757d; /* Màu phụ */
+  --success-color: #28a745; /* Màu thành công */
+  --danger-color: #dc3545; /* Màu nguy hiểm */
+  --warning-color: #ffc107; /* Màu cảnh báo */
+  --info-color: #17a2b8; /* Màu thông tin */
+  --light-color: #f8f9fa; /* Màu sáng */
+  --dark-color: #343a40; /* Màu tối */
+}
+
+body {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
