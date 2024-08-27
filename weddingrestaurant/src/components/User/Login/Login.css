@@ -16,6 +16,7 @@ html {
   width: 85%;
   max-width: 1200px;
   height: 90%;
+  min-height: 655px;
   display: flex;
   flex-direction: row;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -56,6 +57,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
 }
 
 .login-form h2 {
@@ -68,7 +70,7 @@ form .form-control {
   padding: 0.75rem 1.25rem;
 }
 
-.login-form button[type="submit"] {
+.login-form button.login {
   border-radius: 20px;
   padding: 0.75rem;
   margin-top: 1rem;
@@ -76,12 +78,12 @@ form .form-control {
   border-color: #519197;
 }
 
-.login-form button[type="submit"]:hover {
+.login-form button.login:hover {
   background-color: #519197;
   border-color: #519197;
 }
 
-.login-form button[type="submit"]:active {
+.login-form button.login:active {
   background-color: var(--button-color);
 }
 
@@ -136,29 +138,36 @@ form .form-control {
   color: var(--dark-color);
 }
 
+
 .password-container {
   position: relative;
 }
 
 .password-container .form-control {
-  padding-right: 2.5rem;
-}
-
-.password-container .password-toggle:hover {
-  color: #519197;
-}
-
-.password-container .password-toggle:active {
-  color: var(--button-color) !important;
+  padding-right: 2rem;
 }
 
 .password-container .password-toggle {
   position: absolute;
-  top: 50%;
+  top: 45%;
   right: 0.5rem;
   transform: translateY(-50%);
   font-size: 1.2rem;
   color: var(--button-color);
   border: none;
   background: transparent;
+  z-index: 1;
+}
+
+.password-toggle:hover {
+  color: #519197;
+}
+
+.password-toggle:active {
+  color: var(--button-color) !important;
+}
+
+.alert {
+  margin: 0;
+  border-radius: 15px;
 }
