@@ -30,8 +30,8 @@ const Header = () => {
 
         <Nav className="ms-auto header-nav">
           <Nav.Link href="#4">Tin Tức</Nav.Link>
-          <Nav.Link href="#5">Liên Hệ</Nav.Link>
-          <Nav.Link href="#6">Đặt tiệc</Nav.Link>
+          <Nav.Link href="#5">Đánh Giá</Nav.Link>
+          <Nav.Link href="#6">Đặt Tiệc</Nav.Link>
           <Button variant="primary btn-login" href="/login">
             Đăng Nhập
           </Button>

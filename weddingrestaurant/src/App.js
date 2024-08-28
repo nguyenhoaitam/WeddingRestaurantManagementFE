@@ -5,6 +5,7 @@ import Footer from "./layouts/Footer";
 import Header from "./layouts/Header";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/User/Login/Login";
+import Register from "./components/User/Register/Register"
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
 
       <Footer />

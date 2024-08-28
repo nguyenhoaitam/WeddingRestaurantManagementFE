@@ -1,0 +1,50 @@
+.app-container.register-container {
+    height: 110vh;
+}
+
+.user-form.register-form {
+  padding: 0 2rem;
+  width: 85%;
+  height: 85%;
+}
+
+.user-form h2 {
+  margin-bottom: 1rem;
+}
+
+.register-form form .form-control {
+  margin-bottom: 0.75rem;
+}
+
+.inline-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.inline-group .form-group {
+  flex: 1;
+}
+
+.inline-group .form-group:first-child {
+  flex: 2;
+}
+
+.inline-group .form-group:last-child {
+  flex: 1.2;
+}
+
+.form-group.form-avt {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.input-file-label {
+  margin-right: 10px;
+  width: 200px;
+}
+
+.input-file {
+  flex-grow: 1;
+}

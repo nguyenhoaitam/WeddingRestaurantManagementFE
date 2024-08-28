@@ -5,6 +5,7 @@ import "./Login.css";
 import { Navigate, useNavigate } from "react-router-dom";
 import APIs, { authApi, endpoints } from "../../../configs/APIs";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "../User.css"
 
 const Login = () => {
   const [user, setUser] = useState({});
@@ -39,6 +40,11 @@ const Login = () => {
     if (e.key === "Enter") {
       login();
     }
+  };
+
+  const onFieldChange = (field, value) => {
+    updateState(field, value);
+    setIsInfoEntered(fields.every((field) => user[field.name]?.trim() !== ""));
   };
 
   const login = async () => {
@@ -76,16 +82,11 @@ const Login = () => {
     }
   };
 
-  const onFieldChange = (field, value) => {
-    updateState(field, value);
-    setIsInfoEntered(fields.every((field) => user[field.name]?.trim() !== ""));
-  };
-
   return (
     <>
       <div className="app-container">
-        <div className="login-container">
-          <div className="login-image">
+        <div className="user-container">
+          <div className="user-image">
             <img
               src="https://res.cloudinary.com/dkmurrwq5/image/upload/v1724688828/nen.png"
               alt="Login"
@@ -93,8 +94,8 @@ const Login = () => {
             />
           </div>
 
-          <div className="login-form-container">
-            <div className="login-form">
+          <div className="user-form-container">
+            <div className="user-form">
               <h2 className="text-center">Đăng nhập</h2>
 
               <Form>
@@ -109,7 +110,7 @@ const Login = () => {
                     <Form.Control
                       type={field.type || "text"}
                       placeholder={field.label}
-                      className="Login_TextBox"
+                      className="input-textbox"
                       onChange={(e) =>
                         onFieldChange(field.name, e.target.value)
                       }
@@ -135,7 +136,7 @@ const Login = () => {
                 <Button
                   variant="primary"
                   type="button"
-                  className="w-100 login"
+                  className="w-100 user-btn"
                   onClick={login}
                   disabled={loading}
                 >
@@ -166,9 +167,10 @@ const Login = () => {
                 </a>
               </div>
 
-              <div className="create-account text-center">
+              <div className="change-account text-center">
+                <p>Chưa có tài khoản?</p>
                 <a href="/register">
-                  <i>Tạo tài khoản mới</i>
+                  <i>Đăng ký.</i>
                 </a>
               </div>
             </div>
