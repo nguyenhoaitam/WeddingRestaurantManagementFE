@@ -4,3 +4,60 @@ html {
   margin: 0;
   background-color: var(--primary-color) !important;
 }
+
+.carousel-container,
+.carousel-container * {
+  user-select: none; /* Ngăn chọn văn bản */
+  -webkit-user-drag: none; /* Ngăn kéo hình ảnh */
+}
+
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  -webkit-touch-callout: none; /* Ngăn bật lên callout trên iOS */
+  -webkit-tap-highlight-color: transparent; /* Ngăn bật lên highlight khi chạm vào trên mobile */
+}
+
+.carousel {
+  max-width: 100%;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.carousel-item img {
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.carousel-caption.caption {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  padding: 0;
+}
+
+.carousel-caption.caption h3 {
+  font-size: 24px;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.carousel-caption.caption p {
+  font-size: 12px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(100%);
+}
+
+
+.btn-primary {
+  background-color: #007bff; /* Màu nền của nút */
+  border-color: #007bff; /* Màu viền của nút */
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Màu nền của nút khi di chuột qua */
+  border-color: #004085; /* Màu viền của nút khi di chuột qua */
+}
