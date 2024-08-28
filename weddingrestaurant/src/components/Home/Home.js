@@ -5,11 +5,7 @@ import "./Home.css"
 const Home = () => {
   return (
     <>
-      <ul>
-        <li>
-          <Link to="/login">Go to Login</Link>
-        </li>
-      </ul>
+      
     </>
   );
 };
