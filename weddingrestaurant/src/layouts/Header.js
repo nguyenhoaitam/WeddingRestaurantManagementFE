@@ -9,7 +9,7 @@ const Header = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="me-auto header-nav">
-          <Nav.Link className="custom-nav-link" href="#11">Sảnh Tiệc</Nav.Link>
+          <Nav.Link className="custom-nav-link" href="/hall">Sảnh Tiệc</Nav.Link>
           <NavDropdown title="Dịch Vụ" className="service" id="service-dropdown">
             <NavDropdown.Item href="#1">Văn Nghệ</NavDropdown.Item>
             <NavDropdown.Item href="#2">Trang Trí</NavDropdown.Item>

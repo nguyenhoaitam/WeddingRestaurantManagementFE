@@ -1,0 +1,62 @@
+.card-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto 1rem;
+  gap: 16px;
+  width: 90%;
+  flex-wrap: wrap;
+}
+
+.card.card-hall {
+  flex: 1 1 calc(50% - 10px);
+  max-width: 45%;
+  padding: 1rem;
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
+
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 85%;
+  margin: 20px auto;
+  gap: 15px;
+}
+
+.search-input {
+  flex: 2;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.price-select,
+.session-select,
+.date-picker {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+.button-group > a {
+    background-color: var(--button-color);
+    border: none;
+}
+
+.btn.btn-primary:focus,
+.btn.btn-primary:active,
+.btn.btn-primary:hover {
+    background-color: var(--hover-color);
+}
