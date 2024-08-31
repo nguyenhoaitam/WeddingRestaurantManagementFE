@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { Button, Form, Alert } from "react-bootstrap";
+import React, { useContext, useState } from "react";
+import { Button, Form, Alert, Spinner } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Login.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import APIs, { authApi, endpoints } from "../../../configs/APIs";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../User.css"
+import { MyDispatchContext } from '../../../configs/Contexts';
 
 const Login = () => {
   const [user, setUser] = useState({});
@@ -14,6 +15,7 @@ const Login = () => {
   const [isInfoEntered, setIsInfoEntered] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useContext(MyDispatchContext);
 
   const fields = [
     {
@@ -55,7 +57,7 @@ const Login = () => {
         throw new Error("Vui lòng nhập đầy đủ thông tin đăng nhập!");
       }
 
-      const response = await APIs.post(endpoints.login, {
+      const response = await APIs.post(endpoints['login'], {
         ...user,
         client_id: "jzEQTDJqG0KWm8taVGLhZNKaUku6U2pvUvZDs5ue",
         client_secret:
@@ -63,10 +65,16 @@ const Login = () => {
         grant_type: "password",
       });
 
-      const token = response.data.access_token;
-      localStorage.setItem("token", token);
+      // Lưu token và password vào localStorage
+      localStorage.setItem("token", response.data.access_token);
+      localStorage.setItem("password", user.password);
 
-      const userResponse = await authApi(token).get(endpoints.currentUser);
+      const userResponse = await authApi(response.data.access_token).get(endpoints['current_user']);
+
+      console.log("Thông tin người dùng:", userResponse.data);
+
+
+      dispatch({ type: "login", payload: userResponse.data });
 
       navigate("/");
     } catch (error) {
@@ -75,7 +83,7 @@ const Login = () => {
       setError(
         error.response && error.response.data
           ? "Tên đăng nhập hoặc mật khẩu không đúng!"
-          : "Vui lòng nhập đầy đủ thông tin đăng nhập"
+          : "Tên đăng nhập hoặc mật khẩu không đúng!"
       );
     } finally {
       setLoading(false);
@@ -140,7 +148,7 @@ const Login = () => {
                   onClick={login}
                   disabled={loading}
                 >
-                  {loading ? "Loading..." : "Đăng Nhập"}
+                  {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Đăng Nhập"}
                 </Button>
               </Form>
 

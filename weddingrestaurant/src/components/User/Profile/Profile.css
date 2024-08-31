@@ -1,0 +1,130 @@
+body,
+html {
+  color: var(--text-color);
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 120vh;
+  text-align: center;
+}
+
+.profile-header {
+  padding: 1rem;
+}
+
+.profile-avatar {
+  position: relative;
+}
+
+.profile-avatar img {
+  border: 3px solid #fff;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 15%;
+  right: 20%;
+  color: var(--button-color);
+  background-color: var(--primary-color);
+  padding: 10px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  z-index: 2;
+  transform: translate(50%, 50%);
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.camera-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+#avatarUpload {
+  display: none;
+}
+
+.profile-content {
+  min-height: 300px;
+  min-width: 50%;
+  background-color: #dee1d7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--button-color);
+  margin-top: 2rem;
+  overflow: auto;
+}
+
+.profile-actions {
+  margin-top: 20px;
+}
+
+.profile-actions .btn-pf {
+  background-color: var(--button-color);
+  border: none;
+}
+
+.profile-actions .btn-pf:hover,
+.profile-actions .btn-pf:focus {
+  background-color: var(--hover-color);
+  border: none;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.input-wrapper .icon-eye {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--button-color);
+}
+
+.input-wrapper .icon-eye:hover {
+  color: #519197;
+}
+
+.custom-primary-btn {
+  background-color: var(--button-color);
+  border-color: var(--button-color) !important;
+  color: #fff;
+}
+
+.custom-primary-btn:hover {
+  background-color: var(--hover-color);
+  border-color: var(--hover-color);
+}
+
+.custom-primary-btn:disabled {
+  background-color: var(--button-color);
+  border-color: var(--button-color) !important;
+}
+
+.modal-change-avt .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.modal-change-avt .modal-body img {
+  margin-bottom: 20px;
+}

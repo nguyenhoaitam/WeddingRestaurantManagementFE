@@ -7,16 +7,16 @@ html {
 
 .carousel-container,
 .carousel-container * {
-  user-select: none; /* Ngăn chọn văn bản */
-  -webkit-user-drag: none; /* Ngăn kéo hình ảnh */
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .carousel-container {
   width: 100%;
   overflow: hidden;
   position: relative;
-  -webkit-touch-callout: none; /* Ngăn bật lên callout trên iOS */
-  -webkit-tap-highlight-color: transparent; /* Ngăn bật lên highlight khi chạm vào trên mobile */
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .carousel {
@@ -53,11 +53,11 @@ html {
 
 
 .btn-primary {
-  background-color: #007bff; /* Màu nền của nút */
-  border-color: #007bff; /* Màu viền của nút */
+  background-color: #007bff;
+  border-color: #007bff;
 }
 
 .btn-primary:hover {
-  background-color: #0056b3; /* Màu nền của nút khi di chuột qua */
-  border-color: #004085; /* Màu viền của nút khi di chuột qua */
+  background-color: #0056b3;
+  border-color: #004085;
 }

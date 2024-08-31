@@ -1,7 +1,7 @@
 import { register } from "swiper/element";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import React, { useState } from "react";
-import { Alert, Button, Form } from "react-bootstrap";
+import { Alert, Button, Form, Spinner } from "react-bootstrap";
 import "../User.css";
 import "../Register/Register.css";
 
@@ -186,7 +186,7 @@ const Register = () => {
                   onClick={register}
                   disabled={loading}
                 >
-                  {loading ? "Loading..." : "Đăng Ký"}
+                  {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Đăng kỹ"}
                 </Button>
               </Form>
 
