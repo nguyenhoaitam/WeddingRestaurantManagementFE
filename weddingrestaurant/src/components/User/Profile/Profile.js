@@ -1,5 +1,14 @@
 import { useContext, useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Image, Modal, Row, Spinner } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Col,
+  Form,
+  Image,
+  Modal,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import {
   FaCamera,
   FaUserEdit,
@@ -20,6 +29,12 @@ const Profile = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState(user.customer?.full_name || "");
+  const [address, setAddress] = useState(user.customer?.address || "");
+  const [gender, setGender] = useState(user.customer?.gender || "");
+  const [dob, setDob] = useState(user.customer?.dob || "");
+  const [email, setEmail] = useState(user.email || "");
+  const [phone, setPhone] = useState(user.phone || "");
   const [avatar, setAvatar] = useState(user.avatar || "");
   const [newAvatar, setNewAvatar] = useState(null);
   const [avatarModalVisible, setAvatarModalVisible] = useState(false);
@@ -30,15 +45,17 @@ const Profile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changePasswordVisible, setChangePasswordModalVisible] =
     useState(false);
+
+  const [updateModalVisible, setUpdateModalVisible] = useState(false);
   const [visible, setVisible] = useState({
     old: false,
     new: false,
     confirm: false,
   });
   const [error, setError] = useState("");
+  const [updateError, setUpdateError] = useState("");
   const [modalError, setModalError] = useState("");
   const [loading, setLoading] = useState(false);
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -69,7 +86,7 @@ const Profile = () => {
   };
 
   const handleConfirmAvatarChange = async () => {
-    setLoading(true)
+    setLoading(true);
     if (!newAvatar) return;
 
     const formData = new FormData();
@@ -89,15 +106,15 @@ const Profile = () => {
         setAvatar(URL.createObjectURL(newAvatar));
         setNewAvatar(null);
         setAvatarModalVisible(false);
-        setLoading(false)
+        setLoading(false);
         window.location.reload();
       } else {
         setError("Thay đổi ảnh đại diện thất bại");
-        setLoading(false)
+        setLoading(false);
       }
     } catch (error) {
       setError("Đã xảy ra lỗi khi cập nhật ảnh đại diện!");
-      setLoading(false)
+      setLoading(false);
     }
     setConfirmAvatarModalVisible(false);
   };
@@ -106,6 +123,56 @@ const Profile = () => {
     setAvatar(user.avatar || "");
     setNewAvatar(null);
     setConfirmAvatarModalVisible(false);
+  };
+
+  const handleUpdateInfo = async () => {
+    if (user.user_role === "customer") {
+      setFullName(user.customer?.full_name || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setAddress(user.customer?.address || "");
+      setGender(user.customer?.gender || "");
+      setDob(user.customer?.dob || "");
+    } else if (user.user_role === "staff") {
+      setFullName(user.staff?.full_name || "");
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setAddress(user.staff?.address || "");
+      setGender(user.staff?.gender || "");
+      setDob(user.staff?.dob || "");
+    }
+    setUpdateModalVisible(true);
+    setUpdateError("");
+
+    const data = {
+      full_name: fullName,
+      address: address,
+      gender: gender,
+      dob: dob,
+      email: email,
+      phone: phone,
+    };
+
+    try {
+      const token = localStorage.getItem("token");
+      const api = authApi(token);
+      const response = await api.patch(endpoints["current_user"], data, {
+        headers: {
+         "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        alert("Cập nhật thông tin thành công!");
+        // Cập nhật lại thông tin người dùng trong context hoặc localStorage nếu cần
+        dispatch({ type: "update_user", payload: response.data });
+        window.location.reload();
+      } else {
+        setUpdateError("Cập nhật thông tin thất bại!");
+      }
+    } catch (error) {
+      setUpdateError("Đã xảy ra lỗi khi cập nhật thông tin!");
+    }
   };
 
   const handleChangePassword = async () => {
@@ -143,7 +210,7 @@ const Profile = () => {
         setNewPassword("");
         setConfirmPassword("");
         localStorage.setItem("password", newPassword);
-        setChangePasswordModalVisible(false);        
+        setChangePasswordModalVisible(false);
       } else {
         setModalError("Thay đổi mật khẩu thất bại!");
       }
@@ -211,9 +278,7 @@ const Profile = () => {
                   <p>
                     Số điện thoại: {user.phone ? user.phone : "Chưa cập nhật"}
                   </p>
-                  <p>
-                    Số điện thoại: {user.email ? user.email : "Chưa cập nhật"}
-                  </p>
+                  <p>Email: {user.email ? user.email : "Chưa cập nhật"}</p>
                   <p>
                     Địa chỉ: {user.address ? user.address : "Chưa cập nhật"}
                   </p>
@@ -268,8 +333,8 @@ const Profile = () => {
                   <p>
                     Lương cơ bản:{" "}
                     {user.staff?.salary
-                      ? formatDate(user.staff?.salary)
-                      : "Chưa cập nhật"}
+                      ? user.staff?.salary 
+                      : "Chưa cập nhật"} VNĐ
                   </p>
                   <p>
                     Ngày sinh:{" "}
@@ -281,12 +346,8 @@ const Profile = () => {
                     Giới tính:{" "}
                     {user.staff?.gender ? user.staff?.gender : "Chưa cập nhật"}
                   </p>
-                  <p>
-                    Số điện thoại: {user.phone ? user.phone : "Chưa cập nhật"}
-                  </p>
-                  <p>
-                    Số điện thoại: {user.email ? user.email : "Chưa cập nhật"}
-                  </p>
+                  <p>Điện thoại: {user.phone ? user.phone : "Chưa cập nhật"}</p>
+                  <p>Email: {user.email ? user.email : "Chưa cập nhật"}</p>
                   <p>
                     Địa chỉ:{" "}
                     {user.staff?.address
@@ -304,7 +365,7 @@ const Profile = () => {
           <Col className="d-flex justify-content-around">
             <Button
               variant="primary"
-              // onClick={handleUpdateInfo}
+              onClick={handleUpdateInfo}
               className="mx-2 btn-pf"
             >
               <FaUserEdit className="me-2" /> Cập nhật thông tin
@@ -443,7 +504,88 @@ const Profile = () => {
               onClick={handleConfirmAvatarChange}
               disabled={loading}
             >
-              {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Xác nhận"}
+              {loading ? (
+                <Spinner animation="border" variant="light" size="sm" />
+              ) : (
+                "Xác nhận"
+              )}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={updateModalVisible}
+          onHide={() => setUpdateModalVisible(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Cập nhật thông tin</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group controlId="formFullName">
+                <Form.Label>Họ và tên</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="formEmail">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="formPhone">
+                <Form.Label>Số điện thoại</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="formAddress">
+                <Form.Label>Địa chỉ</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group controlId="formGender">
+                <Form.Label>Giới tính</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <option value="">Chọn giới tính</option>
+                  <option value="Nam">Nam</option>
+                  <option value="Nữ">Nữ</option>
+                  <option value="Khác">Khác</option>
+                </Form.Control>
+              </Form.Group>
+              <Form.Group controlId="formDob">
+                <Form.Label>Ngày sinh</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={dob}
+                  onChange={(e) => setDob(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              variant="secondary"
+              onClick={() => setUpdateModalVisible(false)}
+            >
+              Đóng
+            </Button>
+            <Button variant="primary" onClick={handleUpdateInfo}>
+              Lưu thay đổi
             </Button>
           </Modal.Footer>
         </Modal>
