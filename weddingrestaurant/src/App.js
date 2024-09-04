@@ -9,6 +9,7 @@ import Login from "./components/User/Login/Login";
 import Register from "./components/User/Register/Register";
 import Profile from "./components/User/Profile/Profile"
 import Hall from "./components/Hall/Hall";
+import Menu from "./components/Menu/Menu"
 
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/hall" element={<Hall />} />
+          <Route path="/menu" element={<Menu />} />
         </Routes>
 
         <Footer />

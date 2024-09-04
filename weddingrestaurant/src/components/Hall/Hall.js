@@ -3,6 +3,13 @@ import APIs, { endpoints } from "../../configs/APIs";
 import "./Hall.css";
 import { useEffect } from "react";
 
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
+};
+
 const Hall = () => {
   const [halls, setHalls] = useState([]);
   const [error, setError] = useState(false);
@@ -19,9 +26,7 @@ const Hall = () => {
 
   const getPriceForTime = (hall) => {
     const priceData = hall.prices.find((price) => price.time === filters.time);
-    return priceData
-      ? priceData.price.toLocaleString()
-      : "Không có giá hiển thị";
+    return priceData ? formatCurrency(priceData.price) : null;
   };
 
   const loadHalls = async () => {
@@ -117,11 +122,11 @@ const Hall = () => {
           type="date"
           name="event_date"
           className="date-picker"
-          value={filters.event_date || currentDate} // Đảm bảo cập nhật đúng giá trị
+          value={filters.event_date || currentDate}
           onChange={(e) => {
             setFilters({
               ...filters,
-              event_date: e.target.value, // Cập nhật event_date trong state
+              event_date: e.target.value,
             });
           }}
         />
@@ -144,7 +149,7 @@ const Hall = () => {
               )}
               <div className="card-body">
                 <h5 className="card-title">{hall.name}</h5>
-                <p className="card-text">{getPriceForTime(hall)} VND</p>
+                <p className="card-text">Giá: {getPriceForTime(hall)}</p>
                 <div className="button-group">
                   <a href="#sss" className="btn btn-primary">
                     Xem chi tiết

@@ -1,4 +1,4 @@
-import React, { useContext} from "react";
+import React, { useContext } from "react";
 import { Container, Nav, Navbar, NavDropdown, Button } from "react-bootstrap";
 import "./Header.css";
 import { MyUserContext, MyDispatchContext } from "../configs/Contexts";
@@ -16,7 +16,7 @@ const Header = () => {
     localStorage.removeItem("token");
     dispatch({ type: "logout" });
     navigate("/");
-    // window.location.reload(); 
+    // window.location.reload();
   };
 
   const handleViewProfile = () => {
@@ -33,18 +33,10 @@ const Header = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto header-nav">
-            <Nav.Link className="custom-nav-link" href="/hall">
-              Sảnh Tiệc
-            </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#111q">
-              Dịch Vụ
-            </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#111">
-              Thực Đơn
-            </Nav.Link>
-            <Nav.Link className="custom-nav-link" href="#11111">
-              Ưu Đãi
-            </Nav.Link>
+            <Nav.Link href="/">Trang chủ</Nav.Link>
+            <Nav.Link href="/hall">Sảnh Tiệc</Nav.Link>
+            <Nav.Link href="#111q">Dịch Vụ</Nav.Link>
+            <Nav.Link href="/menu">Thực Đơn</Nav.Link>
           </Nav>
 
           <Navbar.Brand href="/" className="mx-auto">
@@ -58,6 +50,7 @@ const Header = () => {
 
           <Nav className="ms-auto header-nav">
             <Nav.Link href="#4">Tin Tức</Nav.Link>
+            <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
             <Nav.Link href="#5">Đánh Giá</Nav.Link>
             <Nav.Link href="#6">Đặt Tiệc</Nav.Link>
             {user ? (

@@ -63,18 +63,37 @@ const Profile = () => {
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
 
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`;
   };
 
   useEffect(() => {
+    console.log("User data: ", user);
     const fetchUserData = () => {
       const storedUsername = localStorage.getItem("username");
       const storedPassword = localStorage.getItem("password");
       setUsername(storedUsername || "");
       setPassword(storedPassword || "");
+
+      if (updateModalVisible) {
+        if (user.user_role === "staff") {
+          setFullName(user.staff.full_name);
+          setEmail(user.email);
+          setPhone(user.phone);
+          setAddress(user.staff.address);
+          setGender(user.staff.gender);
+          setDob(user.staff.dob);
+        } else if (user.user_role === "customer") {
+          setFullName(user.customer.full_name);
+          setEmail(user.email);
+          setPhone(user.phone);
+          setAddress(user.customer.address);
+          setGender(user.customer.gender);
+          setDob(user.customer.dob);
+        }
+      }
     };
     fetchUserData();
-  }, [user]);
+  }, [user, updateModalVisible]);
 
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
@@ -125,46 +144,57 @@ const Profile = () => {
     setConfirmAvatarModalVisible(false);
   };
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleUpdateInfo = async () => {
-    if (user.user_role === "customer") {
-      setFullName(user.customer?.full_name || "");
-      setEmail(user.email || "");
-      setPhone(user.phone || "");
-      setAddress(user.customer?.address || "");
-      setGender(user.customer?.gender || "");
-      setDob(user.customer?.dob || "");
-    } else if (user.user_role === "staff") {
-      setFullName(user.staff?.full_name || "");
-      setEmail(user.email || "");
-      setPhone(user.phone || "");
-      setAddress(user.staff?.address || "");
-      setGender(user.staff?.gender || "");
-      setDob(user.staff?.dob || "");
-    }
     setUpdateModalVisible(true);
     setUpdateError("");
 
-    const data = {
-      full_name: fullName,
-      address: address,
-      gender: gender,
-      dob: dob,
-      email: email,
-      phone: phone,
-    };
+    if (!fullName || !email || !phone || !address || !gender || !dob) {
+      setUpdateError("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setUpdateError("Vui lòng nhập đúng định dạng email!");
+      return;
+    }
+
+    const formData = new FormData();
+
+    const userRole = user.user_role;
+
+    if (userRole === "customer") {
+      formData.append("customer_full_name", fullName);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("customer_address", address);
+      formData.append("customer_gender", gender);
+      formData.append("customer_dob", dob);
+    } else if (userRole === "staff") {
+      formData.append("staff_full_name", fullName);
+      formData.append("email", email);
+      formData.append("phone", phone);
+      formData.append("staff_address", address);
+      formData.append("staff_gender", gender);
+      formData.append("staff_dob", dob);
+    }
 
     try {
       const token = localStorage.getItem("token");
       const api = authApi(token);
-      const response = await api.patch(endpoints["current_user"], data, {
+      const response = await api.patch(endpoints["current_user"], formData, {
         headers: {
-         "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
 
       if (response.status === 200) {
         alert("Cập nhật thông tin thành công!");
-        // Cập nhật lại thông tin người dùng trong context hoặc localStorage nếu cần
+        // Cập nhật lại thông tin người dùng trong context
         dispatch({ type: "update_user", payload: response.data });
         window.location.reload();
       } else {
@@ -332,9 +362,8 @@ const Profile = () => {
                   </p>
                   <p>
                     Lương cơ bản:{" "}
-                    {user.staff?.salary
-                      ? user.staff?.salary 
-                      : "Chưa cập nhật"} VNĐ
+                    {user.staff?.salary ? user.staff?.salary : "Chưa cập nhật"}{" "}
+                    VNĐ
                   </p>
                   <p>
                     Ngày sinh:{" "}
@@ -365,7 +394,7 @@ const Profile = () => {
           <Col className="d-flex justify-content-around">
             <Button
               variant="primary"
-              onClick={handleUpdateInfo}
+              onClick={() => setUpdateModalVisible(true)}
               className="mx-2 btn-pf"
             >
               <FaUserEdit className="me-2" /> Cập nhật thông tin
@@ -564,7 +593,6 @@ const Profile = () => {
                   <option value="">Chọn giới tính</option>
                   <option value="Nam">Nam</option>
                   <option value="Nữ">Nữ</option>
-                  <option value="Khác">Khác</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="formDob">
@@ -575,6 +603,7 @@ const Profile = () => {
                   onChange={(e) => setDob(e.target.value)}
                 />
               </Form.Group>
+              {updateError && <Alert variant="danger">{updateError}</Alert>}
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -584,7 +613,11 @@ const Profile = () => {
             >
               Đóng
             </Button>
-            <Button variant="primary" onClick={handleUpdateInfo}>
+            <Button
+              variant="primary"
+              className="custom-primary-btn w-25"
+              onClick={handleUpdateInfo}
+            >
               Lưu thay đổi
             </Button>
           </Modal.Footer>
