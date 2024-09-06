@@ -31,8 +31,9 @@ body {
   transition: background-color 0.3s;
 }
 
-.food-type-chip:hover {
-  background-color: #0056b3;
+
+.food-list, .drink-list {
+  min-height: 1150px;
 }
 
 .food-item {
@@ -88,4 +89,41 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 5px 0;
+}
+
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+.search-container .search-input {
+  border-radius: 10px;
+}
+
+.vegetarian-tag {
+  position: absolute;
+  top: 10px;
+  right: 22px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px;
+  border-radius: 0 10px 0 5px;
+  font-size: 12px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--button-color);
+  border-color: var(--button-color);
+  color: #fff;
+}
+
+.pagination .page-link {
+  color: var(--text-color);
+}
+
+.pagination .page-link:hover {
+  color: var(--dark-color);
 }

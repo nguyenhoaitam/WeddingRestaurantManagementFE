@@ -15,7 +15,7 @@ const Home = () => {
 
   return (
     <div {...handlers} className="carousel-container">
-      <Carousel interval={3000} ref={carouselRef}>
+      <Carousel interval={2500} ref={carouselRef}>
         <Carousel.Item>
           <img
             className="d-block w-100"

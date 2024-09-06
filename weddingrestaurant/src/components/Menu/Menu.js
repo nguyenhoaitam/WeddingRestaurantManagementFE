@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Row, Tab, Tabs } from "react-bootstrap";
+import { Button, Card, Col, Pagination, Row, Tab, Tabs } from "react-bootstrap";
 import "./Menu.css";
 import APIs, { endpoints } from "../../configs/APIs";
 
@@ -18,6 +18,15 @@ const Menu = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [selectedFoodTypeId, setSelectedFoodTypeId] = useState(null);
   const [drinkSortOrder, setDrinkSortOrder] = useState("");
+  const [q, setQ] = useState("");
+
+  const [currentFoodPage, setCurrentFoodPage] = useState(1);
+  const [totalFoodPages, setTotalFoodPages] = useState(1);
+
+  const [currentDrinkPage, setCurrentDrinkPage] = useState(1);
+  const [totalDrinkPages, setTotalDrinkPages] = useState(1);
+
+  const PAGE = 6;
 
   useEffect(() => {
     const fetchFoodTypes = async () => {
@@ -33,56 +42,101 @@ const Menu = () => {
     fetchFoodTypes();
   }, []);
 
-  const fetchAllFoods = async (order = "") => {
+  const fetchAllFoods = async (order = "", q = "", page = 1) => {
     try {
-      const params = { order_by: order };
+      const params = { order_by: order, q, page };
       if (selectedFoodTypeId) {
         params.foodtype_id = selectedFoodTypeId;
       }
       const response = await APIs.get(endpoints["foods"], { params });
-      setFoods(response.data);
+      setFoods(response.data.results);
+      setTotalFoodPages(Math.ceil(response.data.count / PAGE));
     } catch (error) {
       console.error("Lỗi khi lấy tất cả món ăn:", error);
     }
   };
 
-  const handleFoodTypeSelect = async (foodTypeId) => {
-    try {
-      const response = await APIs.get(
-        `${endpoints.foods}?foodtype_id=${foodTypeId}`
-      );
-      setSelectedFoodTypeId(foodTypeId);
-      setSortOrder("");
-      setFoods(response.data);
-    } catch (error) {
-      console.error("Lỗi khi lấy món ăn:", error);
-    }
+  useEffect(() => {
+    fetchAllFoods(sortOrder, q, currentFoodPage);
+  }, [selectedFoodTypeId, sortOrder, currentFoodPage]);
+
+  const handleFoodTypeSelect = (foodTypeId) => {
+    setSelectedFoodTypeId(foodTypeId);
+    setSortOrder("");
+    setQ("");
+    setCurrentFoodPage(1);
   };
 
   const handleSortChange = (e) => {
-    const selectedOrder = e.target.value;
-    setSortOrder(selectedOrder);
-    fetchAllFoods(selectedOrder);
+    setSortOrder(e.target.value);
   };
 
-  const fetchDrinks = async (order = "") => {
+  const fetchDrinks = async (order = "", q = "", page = 1) => {
     try {
-      const params = { order_by: order };
+      const params = { order_by: order, q, page };
       const response = await APIs.get(endpoints["drinks"], { params });
-      setDrinks(response.data);
+      setDrinks(response.data.results);
+      setTotalDrinkPages(Math.ceil(response.data.count / PAGE));
     } catch (error) {
       console.error("Lỗi khi lấy tất cả nước uống:", error);
     }
   };
 
   useEffect(() => {
-    fetchDrinks();
-  }, []);
+    if (key === "drink") {
+      fetchDrinks(drinkSortOrder, q, currentDrinkPage);
+    }
+  }, [key, drinkSortOrder, currentDrinkPage]);
 
   const handleDrinkSortChange = (e) => {
-    const selectedOrder = e.target.value;
-    setDrinkSortOrder(selectedOrder);
-    fetchDrinks(selectedOrder);
+    setDrinkSortOrder(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    setQ(e.target.value);
+    if (key === "food") {
+      fetchAllFoods(sortOrder, e.target.value, 1);
+    } else {
+      fetchDrinks(drinkSortOrder, e.target.value, 1);
+    }
+  };
+
+  const handleTabSelect = (k) => {
+    setKey(k);
+    setQ("");
+    if (k === "food") {
+      setCurrentFoodPage(1);
+    } else {
+      setCurrentDrinkPage(1);
+    }
+  };
+
+  const handleFoodPageChange = (newPage) => {
+    setCurrentFoodPage(newPage);
+  };
+
+  const handleDrinkPageChange = (newPage) => {
+    setCurrentDrinkPage(newPage);
+  };
+
+  const renderPagination = (currentPage, totalPages, onPageChange) => {
+    const items = [];
+    for (let number = 1; number <= totalPages; number++) {
+      if (number === 1 || number === totalPages || (number >= currentPage - 1 && number <= currentPage + 1)) {
+        items.push(
+          <Pagination.Item
+            key={number}
+            active={number === currentPage}
+            onClick={() => onPageChange(number)}
+          >
+            {number}
+          </Pagination.Item>
+        );
+      } else if (items[items.length - 1]?.type !== Pagination.Ellipsis) {
+        items.push(<Pagination.Ellipsis key={`ellipsis-${number}`} />);
+      }
+    }
+    return items;
   };
 
   return (
@@ -93,15 +147,26 @@ const Menu = () => {
         className="mb-3"
         fill
         activeKey={key}
-        onSelect={(k) => setKey(k)}
+        onSelect={handleTabSelect}
       >
         <Tab eventKey="food" title="Món ăn">
           <div className="food-section">
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Tìm kiếm món ăn"
+                value={q}
+                onChange={handleSearch}
+                className="search-input"
+              />
+            </div>
+
             <div className="food-type-container">
               <Button
                 onClick={() => {
                   setSelectedFoodTypeId(null);
-                  fetchAllFoods(sortOrder);
+                  setSortOrder("");
+                  setCurrentFoodPage(1);
                 }}
                 className="all-foods-button food-type-chip"
               >
@@ -140,28 +205,68 @@ const Menu = () => {
                         variant="top"
                         src={food.image || "placeholder.jpg"}
                       />
+                      {food.is_vegetarian && (
+                          <div className="vegetarian-tag">
+                            <span>Ăn chay được</span>
+                          </div>
+                        )}
                       <Card.Body>
                         <Card.Title>{food.name}</Card.Title>
                         {/* <Card.Text>{food.description}</Card.Text> */}
                         <Card.Text>Giá: {formatCurrency(food.price)}</Card.Text>
-                        <Button variant="primary">Chọn món</Button>
+                        <Button
+                          variant="primary"
+                          className="food-type-chip"
+                        >
+                          Chọn món
+                        </Button>
                       </Card.Body>
                     </Card>
                   </Col>
                 ))
               ) : (
-                <p className="text-center">Chưa có món ăn nào được chọn.</p>
+                <p className="text-center">Không có món ăn nào.</p>
               )}
             </Row>
+
+            <Pagination className="justify-content-center">
+              <Pagination.First onClick={() => handleFoodPageChange(1)} />
+              <Pagination.Prev
+                onClick={() =>
+                  handleFoodPageChange(Math.max(currentFoodPage - 1, 1))
+                }
+              />
+              {renderPagination(currentFoodPage, totalFoodPages, handleFoodPageChange)}
+              <Pagination.Next
+                onClick={() =>
+                  handleFoodPageChange(
+                    Math.min(currentFoodPage + 1, totalFoodPages)
+                  )
+                }
+              />
+              <Pagination.Last
+                onClick={() => handleFoodPageChange(totalFoodPages)}
+              />
+            </Pagination>
           </div>
         </Tab>
         <Tab eventKey="drink" title="Nước uống">
           <div className="drink-section">
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Tìm kiếm nước uống"
+                value={q}
+                onChange={handleSearch}
+                className="search-input"
+              />
+            </div>
+
             <div className="sort-drink">
               <select
                 className="sort-select"
                 value={drinkSortOrder}
-                onChange={handleDrinkSortChange} // Xử lý sự kiện thay đổi sắp xếp
+                onChange={handleDrinkSortChange}
               >
                 <option value="">Không sắp xếp</option>
                 <option value="asc">Xếp theo: Giá tăng dần</option>
@@ -184,17 +289,48 @@ const Menu = () => {
                           <Card.Text>
                             Giá: {formatCurrency(drink.price)}
                           </Card.Text>
-                          <Button variant="primary">Chọn nước</Button>
+                          <Button
+                            variant="primary"
+                            className="food-type-chip"
+                          >
+                            Chọn nước
+                          </Button>
                         </Card.Body>
                       </Card>
                     </Col>
                   ))
                 ) : (
-                  <p className="text-center">
-                    Chưa có nước uống nào được chọn.
-                  </p>
+                  <p className="text-center">Không có nước uống nào.</p>
                 )}
               </Row>
+
+              <Pagination className="justify-content-center">
+                <Pagination.First onClick={() => handleDrinkPageChange(1)} />
+                <Pagination.Prev
+                  onClick={() =>
+                    handleDrinkPageChange(Math.max(currentDrinkPage - 1, 1))
+                  }
+                />
+                {Array.from({ length: totalDrinkPages }, (_, index) => (
+                  <Pagination.Item
+                    key={index + 1}
+                    active={index + 1 === currentDrinkPage}
+                    onClick={() => handleDrinkPageChange(index + 1)}
+                  >
+                    {index + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() =>
+                    handleDrinkPageChange(
+                      Math.min(currentDrinkPage + 1, totalDrinkPages)
+                    )
+                  }
+                />
+                <Pagination.Last
+                  onClick={() => handleDrinkPageChange(totalDrinkPages)}
+                />
+              </Pagination>
             </div>
           </div>
         </Tab>

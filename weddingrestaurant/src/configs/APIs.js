@@ -8,7 +8,8 @@ export const endpoints = {
     'wedding_halls': '/wedding_halls/',
     'drinks': '/drinks/',
     'food_types': '/food_types/',
-    'foods': '/foods/'
+    'foods': '/foods/',
+    'services': '/services/'
 }
 
 

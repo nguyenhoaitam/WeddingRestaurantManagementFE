@@ -35,7 +35,7 @@ const Header = () => {
           <Nav className="me-auto header-nav">
             <Nav.Link href="/">Trang chủ</Nav.Link>
             <Nav.Link href="/hall">Sảnh Tiệc</Nav.Link>
-            <Nav.Link href="#111q">Dịch Vụ</Nav.Link>
+            <Nav.Link href="/service">Dịch Vụ</Nav.Link>
             <Nav.Link href="/menu">Thực Đơn</Nav.Link>
           </Nav>
 

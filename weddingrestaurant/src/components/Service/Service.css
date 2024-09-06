@@ -1,0 +1,91 @@
+.service-container {
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.service-section {
+  margin-top: 20px;
+}
+
+.sort-service {
+  margin: 5px 0;
+  height: 50px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sort-container {
+  margin-bottom: 20px;
+}
+
+.sort-select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.service-list {
+  margin-top: 20px;
+  min-height: 1150px;
+}
+
+.service-type-chip {
+  margin-right: 10px;
+}
+
+.select-btn {
+  background-color: #007bff;
+  border: none;
+}
+
+.service-list .card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.service-list .card-title {
+  font-weight: bold;
+}
+
+.service-list .card-text {
+  color: #555;
+}
+
+.service-btn {
+  background-color: var(--button-color);
+  border: var(--hover-color);
+  color: white;
+  padding: 10px 15px;
+  min-width: 100px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.service-btn:hover {
+  background-color: #0056b3;
+}
+
+
+.pagination .page-item.active .page-link {
+    background-color: var(--button-color);
+    border-color: var(--button-color);
+    color: #fff;
+}
+
+.pagination .page-link {
+    color: var(--text-color);
+}
+
+.pagination .page-link:hover {
+    color: var(--dark-color);
+}
