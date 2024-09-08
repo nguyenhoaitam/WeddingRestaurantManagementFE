@@ -1,0 +1,111 @@
+.booking-page {
+  width: 90%;
+  margin: 20px auto;
+  min-height: 100vh;
+}
+
+.booking-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.left-section {
+  width: 40%;
+  margin-right: 20px;
+}
+
+.right-section {
+  width: 55%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+}
+
+.booking-page input[type="text"],
+.booking-page input[type="tel"],
+.booking-page input[type="email"],
+.booking-page input[type="number"],
+.booking-page input[type="date"],
+.booking-page select,
+.booking-page textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea {
+  height: 140px;
+}
+
+.booking-btn {
+  background-color: var(--button-color);
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.booking-btn:hover {
+  background-color: var(--hover-color);
+}
+
+.payment-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.booking-menu-items {
+  background-color: #fff;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.booking-food-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.booking-food-item {
+  padding: 10px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.booking-food-item:last-child {
+  border-bottom: none;
+}
+
+.booking-food-item:hover {
+  background-color: #e9ecef;
+}
+
+.booking-menu-items input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.total-select {
+  list-style: none;
+  font-weight: bold;
+}
+
+.booking-loading-more {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--button-color);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+}

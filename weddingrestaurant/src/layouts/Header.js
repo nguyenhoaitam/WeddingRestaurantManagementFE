@@ -52,7 +52,7 @@ const Header = () => {
             <Nav.Link href="#4">Tin Tức</Nav.Link>
             <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
             <Nav.Link href="#5">Đánh Giá</Nav.Link>
-            <Nav.Link href="#6">Đặt Tiệc</Nav.Link>
+            <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
             {user ? (
               <NavDropdown
                 title={

@@ -11,6 +11,8 @@ import Profile from "./components/User/Profile/Profile";
 import Hall from "./components/Hall/Hall";
 import Menu from "./components/Menu/Menu";
 import Service from "./components/Service/Service";
+import HallDetail from "./components/Hall/HallDetail";
+import Booking from "./components/Booking/Booking"
 
 const App = () => {
   return (
@@ -24,8 +26,10 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/hall" element={<Hall />} />
+          <Route path="/wedding_hall/:hallId" element={<HallDetail />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/service" element={<Service />} />
+          <Route path="/booking" element={<Booking />} />
         </Routes>
 
         <Footer />

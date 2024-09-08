@@ -141,7 +141,7 @@ const Hall = () => {
           halls.map((hall) => (
             <div key={hall.id} className="card card-hall">
               {hall.images && hall.images.length > 0 ? (
-                <img className="card-img-top" src={hall.images[0]} alt="Hall" />
+                <img className="card-img-hall" src={hall.images[0]} alt="Hall" />
               ) : (
                 <div className="card-img-placeholder">
                   Ảnh của sảnh {hall.name}.
@@ -151,7 +151,7 @@ const Hall = () => {
                 <h5 className="card-title">{hall.name}</h5>
                 <p className="card-text">Giá: {getPriceForTime(hall)}</p>
                 <div className="button-group">
-                  <a href="#sss" className="btn btn-primary">
+                  <a href={`/wedding_hall/${hall.id}`} className="btn btn-primary">
                     Xem chi tiết
                   </a>
                   <a href="#order" className="btn btn-primary">
