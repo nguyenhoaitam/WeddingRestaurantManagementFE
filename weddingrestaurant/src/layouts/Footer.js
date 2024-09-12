@@ -45,7 +45,7 @@ const Footer = () => {
                   className="social-icon"
                 />
               </Nav.Link>
-              <Nav.Link href="#sss">
+              <Nav.Link href="#">
                 <img
                   src="https://res.cloudinary.com/dkmurrwq5/image/upload/v1724824698/logo_instagram.png"
                   alt="Instagram"

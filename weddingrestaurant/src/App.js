@@ -13,6 +13,7 @@ import Menu from "./components/Menu/Menu";
 import Service from "./components/Service/Service";
 import HallDetail from "./components/Hall/HallDetail";
 import Booking from "./components/Booking/Booking"
+import Payment from "./components/Payment/Payment"
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/menu" element={<Menu />} />
           <Route path="/service" element={<Service />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
 
         <Footer />

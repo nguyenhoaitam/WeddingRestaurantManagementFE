@@ -26,8 +26,6 @@ const Menu = () => {
   const [currentDrinkPage, setCurrentDrinkPage] = useState(1);
   const [totalDrinkPages, setTotalDrinkPages] = useState(1);
 
-  const PAGE = 6;
-
   useEffect(() => {
     const fetchFoodTypes = async () => {
       try {
@@ -50,7 +48,7 @@ const Menu = () => {
       }
       const response = await APIs.get(endpoints["foods"], { params });
       setFoods(response.data.results);
-      setTotalFoodPages(Math.ceil(response.data.count / PAGE));
+      setTotalFoodPages(response.data.total_pages);
     } catch (error) {
       console.error("Lỗi khi lấy tất cả món ăn:", error);
     }
@@ -76,7 +74,7 @@ const Menu = () => {
       const params = { order_by: order, q, page };
       const response = await APIs.get(endpoints["drinks"], { params });
       setDrinks(response.data.results);
-      setTotalDrinkPages(Math.ceil(response.data.count / PAGE));
+      setTotalDrinkPages(response.data.total_pages);
     } catch (error) {
       console.error("Lỗi khi lấy tất cả nước uống:", error);
     }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./Booking.css";
-import APIs, { endpoints } from "../../configs/APIs";
 import { BsArrowRightCircleFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import APIs, { endpoints } from "../../configs/APIs";
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -26,11 +26,16 @@ const BookingPage = () => {
   const [loadingMoreDrinks, setLoadingMoreDrinks] = useState(false);
   const [loadingMoreServices, setLoadingMoreServices] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalFoodItems, setTotalFoodItems] = useState(0);
+  const [totalDrinkItems, setTotalDrinkItems] = useState(0);
+  const [totalServiceItems, setTotalServiceItems] = useState(0);
+  const [hallPrice, setHallPrice] = useState(0);
 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     table_quantity: "",
+    wedding_hall: "",
     rental_date: "",
     time_of_day: "",
     wedding_hall: "",
@@ -39,6 +44,24 @@ const BookingPage = () => {
     selectedDrinks: [],
     selectedServices: [],
   });
+
+  const fetchHallPrice = async () => {
+    const { wedding_hall, time_of_day, rental_date } = formData;
+    if (wedding_hall && time_of_day && rental_date) {
+      try {
+        const response = await APIs.get(
+          `${endpoints["wedding_hall_prices"]}?hall_id=${wedding_hall}&time_of_day=${time_of_day}&event_date=${rental_date}`
+        );
+        setHallPrice(response.data[0].price);
+      } catch (error) {
+        console.error("Lỗi khi lấy giá sảnh:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchHallPrice();
+  }, [formData.wedding_hall, formData.time_of_day, formData.rental_date]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +74,14 @@ const BookingPage = () => {
         const foodTypeResponse = await APIs.get(endpoints["food_types"]);
 
         setFoods(foodResponse.data.results);
+        setTotalFoodItems(foodResponse.data.count);
+
         setDrinks(drinkResponse.data.results);
+        setTotalDrinkItems(drinkResponse.data.count);
+
         setServices(serviceResponse.data.results);
+        setTotalServiceItems(serviceResponse.data.count);
+
         setHalls(hallResponse.data);
         setEventTypes(eventTypeResponse.data);
         setFoodTypes(foodTypeResponse.data);
@@ -72,16 +101,24 @@ const BookingPage = () => {
     });
   };
 
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [
+    formData.selectedFoods,
+    formData.selectedDrinks,
+    formData.selectedServices,
+  ]);
+
   const handleCheckboxChange = (e) => {
     const { name, value, checked } = e.target;
     const updatedList = checked
       ? [...formData[name], value]
       : formData[name].filter((item) => item !== value);
+
     setFormData({
       ...formData,
       [name]: updatedList,
     });
-    calculateTotalPrice(updatedList, name);
   };
 
   const handleFoodTypeChange = async (e) => {
@@ -91,11 +128,14 @@ const BookingPage = () => {
     const response = await APIs.get(
       `${endpoints["foods"]}?foodtype_id=${typeId}&page=1`
     );
+    setTotalFoodItems(response.data.count);
     setFoods(response.data.results);
     calculateTotalPrice(formData.selectedFoods, "selectedFoods");
   };
 
   const loadMoreFoods = async () => {
+    if (foods.length >= totalFoodItems) return;
+
     setLoadingMoreFoods(true);
     const response = await APIs.get(
       `${endpoints["foods"]}?foodtype_id=${selectedFoodType}&page=${
@@ -108,6 +148,8 @@ const BookingPage = () => {
   };
 
   const loadMoreDrinks = async () => {
+    if (drinks.length >= totalDrinkItems) return;
+
     setLoadingMoreDrinks(true);
     const response = await APIs.get(
       `${endpoints["drinks"]}?page=${drinkPage + 1}`
@@ -118,6 +160,8 @@ const BookingPage = () => {
   };
 
   const loadMoreServices = async () => {
+    if (services.length >= totalServiceItems) return;
+
     setLoadingMoreServices(true);
     const response = await APIs.get(
       `${endpoints["services"]}?page=${servicePage + 1}`
@@ -127,63 +171,66 @@ const BookingPage = () => {
     setLoadingMoreServices(false);
   };
 
-  const calculateTotalPrice = (selectedItems, type) => {
+  const calculateTotalPrice = () => {
     let total = 0;
 
-    if (type === "selectedFoods") {
-      selectedItems.forEach((foodName) => {
-        const food = foods.find((food) => food.name === foodName);
-        if (food) {
-          total += food.price;
-        }
-      });
-    }
+    formData.selectedFoods.forEach((foodName) => {
+      const food = foods.find((food) => food.name === foodName);
+      if (food) {
+        total += food.price;
+      }
+    });
 
-    if (type === "selectedDrinks") {
-      selectedItems.forEach((drinkName) => {
-        const drink = drinks.find((drink) => drink.name === drinkName);
-        if (drink) {
-          total += drink.price;
-        }
-      });
-    }
+    formData.selectedDrinks.forEach((drinkName) => {
+      const drink = drinks.find((drink) => drink.name === drinkName);
+      if (drink) {
+        total += drink.price;
+      }
+    });
 
-    if (type === "selectedServices") {
-      selectedItems.forEach((serviceName) => {
-        const service = services.find(
-          (service) => service.name === serviceName
-        );
-        if (service) {
-          total += service.price;
-        }
-      });
-    }
+    formData.selectedServices.forEach((serviceName) => {
+      const service = services.find((service) => service.name === serviceName);
+      if (service) {
+        total += service.price;
+      }
+    });
+
+    total += hallPrice;
 
     setTotalPrice(total);
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("/api/bookings", {
-        ...formData,
-        total_price: totalPrice,
-      });
-      alert("Đặt tiệc thành công!");
-      console.log(response.data);
-    } catch (error) {
-      console.error("Lỗi khi đặt tiệc:", error);
-      alert("Có lỗi xảy ra, vui lòng thử lại.");
+
+    if (
+      !formData.name ||
+      !formData.wedding_hall ||
+      !formData.rental_date ||
+      !formData.time_of_day ||
+      formData.selectedFoods.length < 5
+    ) {
+      alert("Vui lòng nhập đầy đủ thông tin và chọn ít nhất 5 món ăn!");
+      return;
     }
+
+    navigate("/payment", {
+      state: {
+        formData,
+        totalPrice,
+      },
+    });
   };
 
   return (
     <div className="booking-page">
-      <h1 className="text-center">Đặt Tiệc</h1>
+      <h2 className="text-center">Đặt Tiệc</h2>
       <div className="booking-container">
         <div className="left-section">
           <div className="customer-info">
-            <h2>Thông tin khách hàng</h2>
+            <h4>Thông tin khách hàng</h4>
             <form>
               <div className="form-group">
                 <label htmlFor="customer_name">Họ và tên</label>
@@ -218,7 +265,7 @@ const BookingPage = () => {
             </form>
           </div>
           <form onSubmit={handleSubmit}>
-            <h2>Thông tin bữa tiệc</h2>
+            <h4>Thông tin bữa tiệc</h4>
             <div className="form-group">
               <label htmlFor="name">Tên bữa tiệc</label>
               <input
@@ -290,7 +337,7 @@ const BookingPage = () => {
               <select name="time_of_day" onChange={handleChange} required>
                 <option value="">Chọn thời gian</option>
                 <option value="Sáng">Buổi sáng</option>
-                <option value="Chiều">Buổi chiều</option>
+                <option value="Trưa">Buổi trưa</option>
                 <option value="Tối">Buổi tối</option>
               </select>
             </div>
@@ -298,7 +345,7 @@ const BookingPage = () => {
         </div>
 
         <div className="right-section">
-          <h2>Thông tin thực đơn</h2>
+          <h4>Thông tin thực đơn</h4>
           <div className="food-item">
             <div className="form-group">
               <h5>Thức ăn</h5>
@@ -406,31 +453,43 @@ const BookingPage = () => {
               </button>
             </div>
           </div>
-
-          <div className="selected-items">
-            <h3>Tất cả:</h3>
-            <ul>
-              <li className="total-select">Thức ăn: </li>
-              {formData.selectedFoods.map((food, index) => (
-                <li key={index}>{food}</li>
-              ))}
-              <li className="total-select">Nước uống:</li>
-              {formData.selectedDrinks.map((drink, index) => (
-                <li key={index}>{drink}</li>
-              ))}
-              <li className="total-select">Dịch vụ:</li>
-              {formData.selectedServices.map((service, index) => (
-                <li key={index}>{service}</li>
-              ))}
-            </ul>
-          </div>
-
-          <h3>Tổng giá: {formatCurrency(totalPrice)} VND</h3>
-
-          <button type="submit" className="booking-btn">
-            Đặt tiệc
-          </button>
         </div>
+      </div>
+      <h3>Thực đơn và dịch vụ:</h3>
+      <div className="selected-items">
+        <div className="selected-foods">
+          <ul>
+            <li className="total-select text-center">Thức ăn</li>
+            {formData.selectedFoods.map((food, index) => (
+              <li key={index}>{food}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="selected-drinks">
+          <ul>
+            <li className="total-select text-center">Nước uống</li>
+            {formData.selectedDrinks.map((drink, index) => (
+              <li key={index}>{drink}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="selected-services">
+          <ul>
+            <li className="total-select text-center">Dịch vụ</li>
+            {formData.selectedServices.map((service, index) => (
+              <li key={index}>{service}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p className="hall-price">Giá sảnh: {formatCurrency(hallPrice)}</p>
+
+      <h3>Tổng giá: {formatCurrency(totalPrice)}</h3>
+
+      <div className="booking-btn-container">
+        <button type="submit" className="booking-btn" onClick={handleSubmit}>
+          Tiếp tục <BsArrowRightCircleFill />
+        </button>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Pagination, Row, Tab, Tabs } from "react-bootstrap";
-import "./Service.css"; // Thay đổi tên file CSS nếu cần
+import { Button, Card, Col, Pagination, Row } from "react-bootstrap";
+import "./Service.css";
 import APIs, { endpoints } from "../../configs/APIs";
 
 const formatCurrency = (value) => {
@@ -16,7 +16,6 @@ const Service = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [currentServicePage, setCurrentServicePage] = useState(1);
   const [totalServicePages, setTotalServicePages] = useState(1);
-  const PAGE = 6;
 
   useEffect(() => {
     fetchServices();
@@ -27,7 +26,7 @@ const Service = () => {
       const params = { order_by: sortOrder, q, page: currentServicePage };
       const response = await APIs.get(endpoints["services"], { params });
       setServices(response.data.results);
-      setTotalServicePages(Math.ceil(response.data.count / PAGE));
+      setTotalServicePages(response.data.total_pages);
     } catch (error) {
       console.error("Lỗi khi lấy tất cả dịch vụ:", error);
     }

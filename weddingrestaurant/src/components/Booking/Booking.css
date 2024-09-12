@@ -2,6 +2,11 @@
   width: 90%;
   margin: 20px auto;
   min-height: 100vh;
+  color: var(--text-color);
+}
+
+.booking-page h3 {
+  margin: 12px 0;
 }
 
 .booking-container {
@@ -20,7 +25,7 @@
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .form-group label {
@@ -45,6 +50,11 @@ textarea {
   height: 140px;
 }
 
+.booking-btn-container {
+  display: flex;
+  justify-content: center;
+}
+
 .booking-btn {
   background-color: var(--button-color);
   color: white;
@@ -52,6 +62,7 @@ textarea {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  min-width: 100px;
 }
 
 .booking-btn:hover {
@@ -66,12 +77,16 @@ textarea {
 
 .booking-menu-items {
   background-color: #fff;
-  max-height: 300px;
+  max-height: 270px;
   overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 20px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+}
+
+.booking-menu-items p {
+  margin-bottom: 10px;
 }
 
 .booking-food-list {
@@ -80,7 +95,7 @@ textarea {
 }
 
 .booking-food-item {
-  padding: 10px;
+  padding: 0px 10px;
   border-bottom: 1px solid #e9ecef;
 }
 
@@ -90,6 +105,20 @@ textarea {
 
 .booking-food-item:hover {
   background-color: #e9ecef;
+}
+
+.booking-page .food-item {
+  border: none;
+  padding: 0;
+}
+
+.booking-page .drink-item {
+  padding: 0 10px;
+}
+
+.booking-page .service-item {
+  padding: 0 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .booking-menu-items input[type="checkbox"] {
@@ -108,4 +137,29 @@ textarea {
   border: none;
   border-radius: 10px;
   color: #fff;
+  margin-top: 10px;
+}
+
+.selected-items {
+  height: 250px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  overflow-y: auto;
+}
+
+.selected-items div {
+  width: 30%;
+}
+
+.selected-items li {
+  margin: 5px;
+}
+
+.hall-price {
+  margin: 5px 0;
+  font-weight: bold;
 }
