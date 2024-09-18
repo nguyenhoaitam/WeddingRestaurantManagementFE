@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Booking.css";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import APIs, { endpoints } from "../../configs/APIs";
+import APIs, { authApi, endpoints } from "../../configs/APIs";
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -11,7 +11,7 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
-const BookingPage = () => {
+const Booking = () => {
   const [foods, setFoods] = useState([]);
   const [drinks, setDrinks] = useState([]);
   const [services, setServices] = useState([]);
@@ -30,20 +30,68 @@ const BookingPage = () => {
   const [totalDrinkItems, setTotalDrinkItems] = useState(0);
   const [totalServiceItems, setTotalServiceItems] = useState(0);
   const [hallPrice, setHallPrice] = useState(0);
+  const [token, setToken] = useState(null);
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    customer_name: "",
+    customer_phone: "",
+    customer_email: "",
     name: "",
     description: "",
     table_quantity: "",
     wedding_hall: "",
     rental_date: "",
     time_of_day: "",
-    wedding_hall: "",
     payment_method: "Tiền mặt",
     selectedFoods: [],
     selectedDrinks: [],
     selectedServices: [],
+    drinkQuantities: "",
   });
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const storedToken = localStorage.getItem("token");
+        if (!storedToken) {
+          localStorage.setItem("redirectAfterLogin", "/booking");
+          navigate("/login");
+        } else {
+          setToken(storedToken);
+        }
+      } catch (error) {
+        alert("Không thể lấy tài nguyên");
+      }
+    };
+
+    fetchToken();
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        if (token) {
+          const userResponse = await authApi(token).get(
+            endpoints["current_user"]
+          );
+
+          setFormData((prevData) => ({
+            ...prevData,
+            customer_name: userResponse.data.customer.full_name,
+            customer_phone: userResponse.data.email,
+            customer_email: userResponse.data.phone,
+          }));
+        }
+      } catch (error) {
+        console.error("Lỗi khi tải người dùng:", error);
+        alert("Không thể lấy thông tin người dùng");
+      }
+    };
+
+    fetchUserProfile();
+  }, [token]);
 
   const fetchHallPrice = async () => {
     const { wedding_hall, time_of_day, rental_date } = formData;
@@ -107,6 +155,8 @@ const BookingPage = () => {
     formData.selectedFoods,
     formData.selectedDrinks,
     formData.selectedServices,
+    formData.table_quantity,
+    formData.drinkQuantities
   ]);
 
   const handleCheckboxChange = (e) => {
@@ -174,17 +224,20 @@ const BookingPage = () => {
   const calculateTotalPrice = () => {
     let total = 0;
 
+    const tableQuantity = parseInt(formData.table_quantity) || 1;
+
     formData.selectedFoods.forEach((foodName) => {
       const food = foods.find((food) => food.name === foodName);
       if (food) {
-        total += food.price;
+        total += food.price * tableQuantity;
       }
     });
 
     formData.selectedDrinks.forEach((drinkName) => {
       const drink = drinks.find((drink) => drink.name === drinkName);
       if (drink) {
-        total += drink.price;
+        const quantity = formData.drinkQuantities[drinkName] || 1;
+        total += drink.price * quantity;
       }
     });
 
@@ -200,8 +253,6 @@ const BookingPage = () => {
     setTotalPrice(total);
   };
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -212,7 +263,12 @@ const BookingPage = () => {
       !formData.time_of_day ||
       formData.selectedFoods.length < 5
     ) {
-      alert("Vui lòng nhập đầy đủ thông tin và chọn ít nhất 5 món ăn!");
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
+
+    if (formData.selectedFoods.length < 5) {
+      alert("Vui lòng chọn ít nhất 5 món ăn!");
       return;
     }
 
@@ -222,6 +278,19 @@ const BookingPage = () => {
         totalPrice,
       },
     });
+  };
+
+  const handleDrinkQuantityChange = (e, drinkName) => {
+    const quantity = parseInt(e.target.value) || 1;
+    setFormData((prevData) => ({
+      ...prevData,
+      drinkQuantities: {
+        ...prevData.drinkQuantities,
+        [drinkName]: quantity,
+      },
+    }));
+  
+    calculateTotalPrice();
   };
 
   return (
@@ -238,6 +307,7 @@ const BookingPage = () => {
                   type="text"
                   id="customer_name"
                   name="customer_name"
+                  value={formData.customer_name}
                   required
                   onChange={handleChange}
                 />
@@ -248,6 +318,7 @@ const BookingPage = () => {
                   type="tel"
                   id="customer_phone"
                   name="customer_phone"
+                  value={formData.customer_phone}
                   required
                   onChange={handleChange}
                 />
@@ -258,6 +329,7 @@ const BookingPage = () => {
                   type="email"
                   id="customer_email"
                   name="customer_email"
+                  value={formData.customer_email}
                   required
                   onChange={handleChange}
                 />
@@ -305,8 +377,10 @@ const BookingPage = () => {
               <label htmlFor="table_quantity">Số lượng bàn</label>
               <input
                 type="number"
+                 min="1"
                 id="table_quantity"
                 name="table_quantity"
+                value={formData.table_quantity}
                 required
                 onChange={handleChange}
               />
@@ -365,19 +439,21 @@ const BookingPage = () => {
               <div className="booking-food-list">
                 {foods.map((food) => (
                   <div className="booking-food-item" key={food.id}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value={food.name}
-                        checked={formData.selectedFoods.includes(food.name)}
-                        onChange={handleCheckboxChange}
-                        name="selectedFoods"
-                      />
-                      Chọn
-                    </label>
-                    <p>
-                      {food.name} - Giá: {formatCurrency(food.price)} / bàn
-                    </p>
+                    <div className="booking-food-item-choose">
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={food.name}
+                          checked={formData.selectedFoods.includes(food.name)}
+                          onChange={handleCheckboxChange}
+                          name="selectedFoods"
+                        />
+                        Chọn
+                      </label>
+                      <p>
+                        {food.name} - Giá: {formatCurrency(food.price)} / bàn
+                      </p>
+                    </div>
                   </div>
                 ))}
                 {loadingMoreFoods && <div className="spinner">Loading...</div>}
@@ -397,19 +473,30 @@ const BookingPage = () => {
             <div className="booking-menu-items">
               {drinks.map((drink) => (
                 <div className="drink-item" key={drink.id}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      value={drink.name}
-                      checked={formData.selectedDrinks.includes(drink.name)}
-                      onChange={handleCheckboxChange}
-                      name="selectedDrinks"
-                    />
-                    Chọn
-                  </label>
-                  <p>
-                    {drink.name} - Giá: {formatCurrency(drink.price)}
-                  </p>
+                  <div className="booking-drink-item-choose">
+                    <label>
+                      <input
+                        type="checkbox"
+                        value={drink.name}
+                        checked={formData.selectedDrinks.includes(drink.name)}
+                        onChange={handleCheckboxChange}
+                        name="selectedDrinks"
+                      />
+                      Chọn
+                    </label>
+                    <p>
+                      {drink.name} - Giá: {formatCurrency(drink.price)} /{" "}
+                      {drink.unit}
+                    </p>
+                  </div>
+                  <input
+                    type="number"
+                    min="1"
+                    value={formData.drinkQuantities?.[drink.name] || 1}
+                    onChange={(e) => handleDrinkQuantityChange(e, drink.name)}
+                    placeholder="Số lượng"
+                    className="input-quantity"
+                  />
                 </div>
               ))}
               {loadingMoreDrinks && <div className="spinner">Loading...</div>}
@@ -495,4 +582,4 @@ const BookingPage = () => {
   );
 };
 
-export default BookingPage;
+export default Booking;

@@ -114,6 +114,18 @@ textarea {
 
 .booking-page .drink-item {
   padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.booking-drink-item-choose {
+  width: 80%;
+}
+
+.drink-items .input-quantity {
+  height: 80%;
+  width: 20% !important;
 }
 
 .booking-page .service-item {
@@ -161,5 +173,6 @@ textarea {
 
 .hall-price {
   margin: 5px 0;
+  font-size: 20px;
   font-weight: bold;
 }

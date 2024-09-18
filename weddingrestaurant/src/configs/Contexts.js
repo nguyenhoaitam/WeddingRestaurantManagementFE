@@ -28,7 +28,6 @@ export const ContextProvider = ({ children }) => {
             if (token) {
                 try {
                     const userResponse = await authApi(token).get(endpoints['current_user']);
-                    console.log(userResponse)
                     dispatch({ type: "login", payload: userResponse.data });
                 } catch (error) {
                     console.error("Lỗi khi nạp người dùng:", error);

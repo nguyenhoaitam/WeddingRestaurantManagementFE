@@ -5,8 +5,8 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import APIs, { authApi, endpoints } from "../../../configs/APIs";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../User.css"
-import { MyDispatchContext } from '../../../configs/Contexts';
+import "../User.css";
+import { MyDispatchContext } from "../../../configs/Contexts";
 
 const Login = () => {
   const [user, setUser] = useState({});
@@ -57,7 +57,7 @@ const Login = () => {
         throw new Error("Vui lòng nhập đầy đủ thông tin đăng nhập!");
       }
 
-      const response = await APIs.post(endpoints['login'], {
+      const response = await APIs.post(endpoints["login"], {
         ...user,
         client_id: "jzEQTDJqG0KWm8taVGLhZNKaUku6U2pvUvZDs5ue",
         client_secret:
@@ -69,14 +69,21 @@ const Login = () => {
       localStorage.setItem("token", response.data.access_token);
       localStorage.setItem("password", user.password);
 
-      const userResponse = await authApi(response.data.access_token).get(endpoints['current_user']);
+      const userResponse = await authApi(response.data.access_token).get(
+        endpoints["current_user"]
+      );
 
       console.log("Thông tin người dùng:", userResponse.data);
 
-
       dispatch({ type: "login", payload: userResponse.data });
 
-      navigate("/");
+      const redirectTo = localStorage.getItem("redirectAfterLogin");
+      if (redirectTo) {
+        localStorage.removeItem("redirectAfterLogin");
+        navigate(redirectTo);
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
 
@@ -148,7 +155,11 @@ const Login = () => {
                   onClick={login}
                   disabled={loading}
                 >
-                  {loading ? <Spinner animation="border" variant="light" size="sm" /> : "Đăng Nhập"}
+                  {loading ? (
+                    <Spinner animation="border" variant="light" size="sm" />
+                  ) : (
+                    "Đăng Nhập"
+                  )}
                 </Button>
               </Form>
 
