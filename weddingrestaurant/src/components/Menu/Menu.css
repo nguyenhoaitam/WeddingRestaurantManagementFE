@@ -51,7 +51,6 @@ body {
 
 .sort-drink {
   margin: 5px 0;
-  height: 40px;
   display: flex;
   justify-content: flex-end;
 }
@@ -89,6 +88,12 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 5px 0;
+}
+
+.menu-container .sort-select {
+  padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 

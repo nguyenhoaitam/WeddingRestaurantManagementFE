@@ -1,0 +1,76 @@
+.c-booking-container {
+  margin-top: 50px;
+  width: 70%;
+  min-height: 100vh;
+  color: var(--text-color);
+  margin: 20px auto;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  margin-bottom: 10px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.card-body {
+  padding: 10px 40px;
+}
+
+.button-primary {
+  background-color: var(--button-color);
+  border: none;
+  color: white;
+}
+
+.button-primary:hover,
+.button-primary:active {
+  background-color: var(--hover-color);
+}
+
+.modal-header {
+  background-color: var(--button-color);
+  color: white;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+}
+
+.modal-body p {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 0 10px;
+}
+
+.modal-footer .btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+}
+
+.b-table-header th {
+  font-weight: bold;
+  text-align: center;
+  background-color: var(--button-color);
+}

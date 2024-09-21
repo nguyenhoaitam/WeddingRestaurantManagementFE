@@ -3,21 +3,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MyUserContext } from "../../configs/Contexts";
 import APIs, { endpoints } from "../../configs/APIs";
 import "./Payment.css";
-import { Button, Spinner } from "react-bootstrap";
+import { Button, Spinner, Modal } from "react-bootstrap";
 import defaultPaymentImg from "../../assets/images/transaction.png";
 
 const Payment = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useContext(MyUserContext);
+  const [showModal, setShowModal] = useState(false);
 
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Lấy formData và totalPrice từ location.state
-  const { formData, totalPrice } = location.state || {};
+  // Lấy bookingData và totalPrice từ location.state
+  const { bookingData, totalPrice } = location.state || {};
 
-  if (!formData || !totalPrice) {
+  if (!bookingData || !totalPrice) {
     alert("Dữ liệu thanh toán không hợp lệ. Quay lại trang trước.");
     navigate(-1);
     return null;
@@ -74,11 +75,6 @@ const Payment = () => {
     </div>
   );
 
-  const handleLivePayment = () => {
-    alert("Đặt tiệc thành công");
-    navigate("/");
-  };
-
   const handleMoMoPayment = async () => {
     try {
       const response = await APIs.post(endpoints["momo"], null, {
@@ -86,8 +82,8 @@ const Payment = () => {
       });
       if (response.data.payUrl) {
         window.open(response.data.payUrl, "_blank");
-        handleSubmit(true);
-        // navigate("/");
+        await handleSubmit(true);
+        navigate("/customer_booking");
       } else {
         throw new Error("Lỗi khi tạo đơn hàng MoMo");
       }
@@ -102,10 +98,10 @@ const Payment = () => {
       const response = await APIs.post(endpoints["zalo_pay"], null, {
         headers: { amount: totalPrice.toString() },
       });
-      console.log(response.data);
       if (response.data.order_url) {
         window.open(response.data.order_url, "_blank");
-        navigate("/");
+        await handleSubmit(true);
+        navigate("/customer_booking");
       } else {
         throw new Error("Lỗi khi tạo đơn hàng ZaloPay");
       }
@@ -120,7 +116,9 @@ const Payment = () => {
     try {
       switch (selectedPaymentMethod) {
         case 1:
-          handleLivePayment();
+          await handleSubmit(false);
+          setShowModal(true);
+          navigate("/customer_booking");
           break;
         case 3:
           await handleMoMoPayment();
@@ -145,63 +143,55 @@ const Payment = () => {
       const selectedPaymentMethodObj = paymentMethods.find(
         (method) => method.id === selectedPaymentMethod
       );
-  
-      // Kiểm tra xem người dùng đã đăng nhập hay chưa
+
       if (!user || !user.id) {
         alert("Bạn cần đăng nhập để đặt tiệc.");
-        navigate("/login");  // Chuyển hướng người dùng đến trang đăng nhập
+        navigate("/login");
         return;
       }
-  
-      // Tạo formData chứa thông tin đặt tiệc
-      const formDataToSubmit = new FormData();
-  
-      // Thêm các trường dữ liệu đơn đặt tiệc
-      formDataToSubmit.append("name", formData.name);  // Tên đặt tiệc
-      formDataToSubmit.append("description", formData.description);  // Mô tả
-      formDataToSubmit.append("table_quantity", formData.table_quantity);  // Số lượng bàn
-      formDataToSubmit.append("rental_date", formData.rental_date);  // Ngày thuê
-      formDataToSubmit.append("time_of_day", formData.time_of_day);  // Buổi trong ngày
-      formDataToSubmit.append("payment_method", selectedPaymentMethodObj.name);  // Phương thức thanh toán
-      formDataToSubmit.append("payment_status", paymentStatus ? "Đã thanh toán" : "Chờ thanh toán");  // Trạng thái thanh toán
-      formDataToSubmit.append("total_price", totalPrice);  // Tổng tiền
-      formDataToSubmit.append("customer", user.id);  // ID của khách hàng (người dùng đang đăng nhập)
-      formDataToSubmit.append("wedding_hall", formData.wedding_hall);  // Hội trường cưới
-      formDataToSubmit.append("event_type", formData.event_type);  // Loại sự kiện
 
-      console.log("aaa: " + formDataToSubmit)
-  
-      // Thêm danh sách các món ăn, đồ uống và dịch vụ
-      formData.foods.forEach((food, index) => {
-        formDataToSubmit.append(`foods[${index}]`, food);
-      });
-  
-      formData.drinks.forEach((drink, index) => {
-        formDataToSubmit.append(`drinks[${index}]`, drink);
-      });
-  
-      formData.services.forEach((service, index) => {
-        formDataToSubmit.append(`services[${index}]`, service);
-      });
+      const dataToSubmit = {
+        name: bookingData.name,
+        description: `
+            Tên khách hàng: ${bookingData.customer_name},
+            Số điện thoại: ${bookingData.customer_phone || "Chưa có số điện thoại"},
+            Email: ${bookingData.customer_email || "Chưa có email"},
+            Mô tả: ${bookingData.description}
+        `,
+        table_quantity: bookingData.table_quantity,
+        rental_date: bookingData.rental_date,
+        time_of_day: bookingData.time_of_day,
+        payment_method: selectedPaymentMethodObj.name,
+        payment_status: paymentStatus ? "Đã thanh toán" : "Chờ thanh toán",
+        total_price: totalPrice,
+        wedding_hall: bookingData.wedding_hall,
+        customer: user.id,
+        event_type: bookingData.event_type,
+        foods: bookingData.foods.map((food) => ({
+          food: food.food,
+          quantity: food.quantity,
+        })),
+        drinks: bookingData.drinks.map((drink) => ({
+          drink: drink.drink,
+          quantity: drink.quantity,
+        })),
+        services: bookingData.services.map((service) => ({
+          service: service.service,
+          quantity: service.quantity,
+        })),
+      };
 
-      console.log("aaa2: " + formDataToSubmit)
-  
-      // Gửi dữ liệu đến API đặt tiệc
-      const res = await APIs.post(endpoints["booking"], formDataToSubmit, {
+      const res = await APIs.post(endpoints["booking"], dataToSubmit, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
-      
-  
-      // Kiểm tra phản hồi của API
-      // if (res.status === 201) {
-      //   alert("Đặt tiệc thành công");
-      //   navigate("/");  // Chuyển hướng người dùng sau khi đặt tiệc thành công
-      // } else {
-      //   alert("Đăng ký đặt tiệc thất bại. Vui lòng thử lại!");
-      // }
+      if (res.status === 201) {
+        alert("Đặt tiệc thành công");
+      } else {
+        alert("Đăng ký đặt tiệc thất bại. Vui lòng thử lại!");
+      }
     } catch (error) {
       console.error("Lỗi khi lưu thông tin đặt tiệc:", error);
       alert("Có lỗi xảy ra khi đăng ký đặt tiệc. Vui lòng thử lại sau!");
@@ -209,7 +199,11 @@ const Payment = () => {
       setLoading(false);
     }
   };
-  
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate("/");
+  };
 
   return (
     <div className="payment-container">
@@ -232,6 +226,35 @@ const Payment = () => {
           </Button>
         </div>
       </div>
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Hướng dẫn thanh toán</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Cảm ơn quý khách hàng đã tin tưởng và lựa chọn dịch vụ tại chúng
+            tôi!
+          </p>
+          <p>Vui lòng đến địa chỉ sau để thanh toán:</p>
+          <p>
+            <strong>Địa chỉ:</strong> 99 Nguyễn Hữu Thọ, P.Tân Hưng, Quận 7,
+            TP.HCM
+          </p>
+          <p>
+            <strong>Phòng:</strong> 101
+          </p>
+          <p>
+            <strong>Số điện thoại liên hệ:</strong> 039 487 9999
+          </p>
+          <p>Xin cảm ơn!</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

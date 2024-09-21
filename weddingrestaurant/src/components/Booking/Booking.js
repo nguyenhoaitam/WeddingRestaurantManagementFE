@@ -35,6 +35,7 @@ const Booking = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    customer_id: "",
     customer_name: "",
     customer_phone: "",
     customer_email: "",
@@ -51,12 +52,18 @@ const Booking = () => {
     drinkQuantities: "",
   });
 
+//   useEffect(() => {
+//     const storedData = localStorage.getItem("bookingFormData");
+//     if (storedData) {
+//         setFormData(JSON.parse(storedData));
+//     }
+// }, []);
+
   useEffect(() => {
     const fetchToken = async () => {
       try {
         const storedToken = localStorage.getItem("token");
         if (!storedToken) {
-          localStorage.setItem("redirectAfterLogin", "/booking");
           navigate("/login");
         } else {
           setToken(storedToken);
@@ -79,9 +86,10 @@ const Booking = () => {
 
           setFormData((prevData) => ({
             ...prevData,
+            customer_id: userResponse.data.customer.user_id,
             customer_name: userResponse.data.customer.full_name,
-            customer_phone: userResponse.data.email,
-            customer_email: userResponse.data.phone,
+            customer_phone: userResponse.data.phone,
+            customer_email: userResponse.data.email,
           }));
         }
       } catch (error) {
@@ -156,7 +164,7 @@ const Booking = () => {
     formData.selectedDrinks,
     formData.selectedServices,
     formData.table_quantity,
-    formData.drinkQuantities
+    formData.drinkQuantities,
   ]);
 
   const handleCheckboxChange = (e) => {
@@ -272,10 +280,57 @@ const Booking = () => {
       return;
     }
 
+    const rentalDate = new Date(formData.rental_date);
+    const currentDate = new Date();
+
+    if (rentalDate < currentDate) {
+        alert("Ngày đặt tiệc không hợp lệ. Vui lòng chọn lại ngày!");
+        return;
+    }
+
+    const bookingData = {
+      customer_name: formData.customer_name,
+      customer_phone: formData.customer_phone,
+      customer_email: formData.customer_email,
+      name: formData.name,
+      description: formData.description,
+      table_quantity: parseInt(formData.table_quantity),
+      rental_date: formData.rental_date,
+      time_of_day: formData.time_of_day,
+      total_price: totalPrice,
+      wedding_hall: formData.wedding_hall,
+      customer: formData.customer_id,
+      event_type: formData.event_type,
+      foods: formData.selectedFoods.map((foodName) => {
+        const food = foods.find((food) => food.name === foodName);
+        return {
+          food: food ? food.id : null,
+          quantity: parseInt(formData.table_quantity),
+        };
+      }),
+      drinks: formData.selectedDrinks.map((drinkName) => {
+        const drink = drinks.find((drink) => drink.name === drinkName);
+        return {
+          drink: drink ? drink.id : null,
+          quantity: formData.drinkQuantities[drinkName] || 1,
+        };
+      }),
+      services: formData.selectedServices.map((serviceName) => {
+        const service = services.find(
+          (service) => service.name === serviceName
+        );
+        return {
+          service: service ? service.id : null,
+          quantity: 1,
+        };
+      }),
+    };
+
+    // localStorage.setItem("bookingFormData", JSON.stringify(formData));
+
     navigate("/payment", {
       state: {
-        formData,
-        totalPrice,
+        bookingData, totalPrice
       },
     });
   };
@@ -289,7 +344,7 @@ const Booking = () => {
         [drinkName]: quantity,
       },
     }));
-  
+
     calculateTotalPrice();
   };
 
@@ -377,7 +432,7 @@ const Booking = () => {
               <label htmlFor="table_quantity">Số lượng bàn</label>
               <input
                 type="number"
-                 min="1"
+                min="1"
                 id="table_quantity"
                 name="table_quantity"
                 value={formData.table_quantity}
