@@ -47,6 +47,7 @@ html {
   align-items: center;
   background-color: #fff;
   border-radius: 0 10px 10px 0;
+  overflow: scroll;
 }
 
 .user-form {

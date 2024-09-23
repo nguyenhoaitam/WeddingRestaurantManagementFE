@@ -67,7 +67,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    console.log("User data: ", user);
     const fetchUserData = () => {
       const storedUsername = localStorage.getItem("username");
       const storedPassword = localStorage.getItem("password");

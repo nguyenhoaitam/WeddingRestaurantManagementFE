@@ -90,7 +90,7 @@ const Header = () => {
       return (
         <>
           <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
-          <Nav.Link href="#5">Đánh Giá</Nav.Link>
+          <Nav.Link href="/feedback">Đánh Giá</Nav.Link>
           <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
           <Nav.Link href="/sss">Chat</Nav.Link>
           <NavDropdown

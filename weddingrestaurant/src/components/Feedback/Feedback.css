@@ -1,0 +1,47 @@
+.feedback-container {
+    width: 70%;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.feedback-title {
+    margin: 20px;
+}
+
+.feedback-btn {
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.feedback-btn:hover {
+    background-color: var(--hover-color);
+}
+
+.modal-body {
+    background-color: #f8f9fa;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.md-feedback-btn {
+    background-color: var(--button-color);
+    border-color: var(--button-color);
+}
+
+.md-feedback-btn:hover,
+.md-feedback-btn:active,
+.md-feedback-btn:focus {
+    background-color: var(--hover-color);
+    border-color: var(--button-color);
+}
+
+.header-comfirm-delete {
+    background-color: rgb(219, 68, 68);
+}

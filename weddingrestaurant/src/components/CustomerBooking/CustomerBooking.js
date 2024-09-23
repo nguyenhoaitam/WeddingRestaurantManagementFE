@@ -154,22 +154,22 @@ const CustomerBooking = () => {
             <Modal.Title>Chi tiết đơn đặt tiệc</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Tên: {selectedBooking.name}</p>
+            <p>Tên khách hàng: {user.customer.full_name}</p>
+            <p>Tên bữa tiệc: {selectedBooking.name}</p>
             <p>Mô tả: {selectedBooking.description}</p>
             <p>Số lượng bàn: {selectedBooking.table_quantity}</p>
-            <p>Ngày tổ chức: {formatDate(selectedBooking.rental_date)}</p>
-            <p>Tổng giá: {selectedBooking.total_price.toLocaleString()} VND</p>
-            <p>Phương thức thanh toán: {selectedBooking.payment_method}</p>
-            <p>Trạng thái thanh toán: {selectedBooking.payment_status}</p>
             <p>
               Ngày đặt:{" "}
               {new Date(selectedBooking.created_date).toLocaleString()}
             </p>
+            <p>Ngày tổ chức: {formatDate(selectedBooking.rental_date)}</p>
+            <p>Phương thức thanh toán: {selectedBooking.payment_method}</p>
+            <p>Trạng thái thanh toán: {selectedBooking.payment_status}</p>
             <p>
               Loại sự kiện:{" "}
               {findNameById(eventTypes, selectedBooking.event_type)}
             </p>
-            <p>Khách hàng: {user.customer.full_name}</p>
+            <p>Tổng giá: {selectedBooking.total_price.toLocaleString()} VND</p>
 
             <p>Thức ăn:</p>
             <Table striped bordered hover>

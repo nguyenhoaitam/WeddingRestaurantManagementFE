@@ -15,6 +15,7 @@ import HallDetail from "./components/Hall/HallDetail";
 import Booking from "./components/Booking/Booking"
 import Payment from "./components/Payment/Payment"
 import CustomerBooking from "./components/CustomerBooking/CustomerBooking";
+import Feedback from "./components/Feedback/Feedback";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/booking" element={<Booking />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/customer_booking" element={<CustomerBooking />} />
+          <Route path="/feedback" element={<Feedback />} />
         </Routes>
 
         <Footer />
