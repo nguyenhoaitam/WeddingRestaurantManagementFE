@@ -5,7 +5,7 @@
   gap: 16px;
   width: 90%;
   flex-wrap: wrap;
-  min-height: 100vh;
+  min-height: 65vh;
 }
 
 .card.card-hall {
@@ -61,4 +61,20 @@
 .btn.btn-primary:active,
 .btn.btn-primary:hover {
     background-color: var(--hover-color);
+}
+
+.card {
+  position: relative;
+}
+
+.tag {
+  position: absolute;
+  top: 16px;
+  right: 30px;
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border-radius: 0 0 10px 10px;
+  font-size: 14px;
+  z-index: 1;
 }

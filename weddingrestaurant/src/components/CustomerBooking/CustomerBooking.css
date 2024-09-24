@@ -49,6 +49,11 @@ h1 {
   background-color: var(--hover-color);
 }
 
+.booking-modal-header {
+  height: 500px;
+  overflow-y: auto;
+}
+
 .modal-header {
   background-color: var(--button-color);
   color: white;

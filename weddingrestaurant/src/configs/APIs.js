@@ -7,6 +7,7 @@ export const endpoints = {
     'user': '/users/',
     'current_user': '/users/current_user/',
     'wedding_halls': '/wedding_halls/',
+    'check_booking_status': '/wedding_halls/check-booking-status/',
     'wedding_hall_prices': '/wedding_hall_prices/',
     'drinks': '/drinks/',
     'food_types': '/food_types/',

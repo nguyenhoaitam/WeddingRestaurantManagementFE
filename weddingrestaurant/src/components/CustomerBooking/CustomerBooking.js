@@ -5,6 +5,13 @@ import { useContext } from "react";
 import { MyUserContext } from "../../configs/Contexts";
 import "./CustomerBooking.css";
 
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
+};
+
 const CustomerBooking = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -81,6 +88,7 @@ const CustomerBooking = () => {
 
   const handleShowDetails = (booking) => {
     setSelectedBooking(booking);
+    console.log(booking)
     setShowModal(true);
   };
 
@@ -126,7 +134,7 @@ const CustomerBooking = () => {
                 <Card.Text>
                   <p>Số lượng bàn: {booking.table_quantity}</p>
                   <p>Ngày tổ chức: {formatDate(booking.rental_date)}</p>
-                  <p>Tổng giá: {booking.total_price.toLocaleString()} VND</p>
+                  <p>Tổng giá: {formatCurrency(booking.total_price)}</p>
                   <p>
                     Trạng thái thanh toán: {booking.payment_status || "Chưa có"}{" "}
                   </p>
@@ -153,7 +161,7 @@ const CustomerBooking = () => {
           <Modal.Header closeButton className="modal-header">
             <Modal.Title>Chi tiết đơn đặt tiệc</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
+          <Modal.Body className="booking-modal-header">
             <p>Tên khách hàng: {user.customer.full_name}</p>
             <p>Tên bữa tiệc: {selectedBooking.name}</p>
             <p>Mô tả: {selectedBooking.description}</p>
@@ -163,13 +171,14 @@ const CustomerBooking = () => {
               {new Date(selectedBooking.created_date).toLocaleString()}
             </p>
             <p>Ngày tổ chức: {formatDate(selectedBooking.rental_date)}</p>
+            <p>Buổi tổ chức: {selectedBooking.time_of_day}</p>
             <p>Phương thức thanh toán: {selectedBooking.payment_method}</p>
             <p>Trạng thái thanh toán: {selectedBooking.payment_status}</p>
             <p>
               Loại sự kiện:{" "}
               {findNameById(eventTypes, selectedBooking.event_type)}
             </p>
-            <p>Tổng giá: {selectedBooking.total_price.toLocaleString()} VND</p>
+            <p> {formatCurrency(selectedBooking.total_price)}</p>
 
             <p>Thức ăn:</p>
             <Table striped bordered hover>
@@ -189,7 +198,7 @@ const CustomerBooking = () => {
               </tbody>
             </Table>
 
-            <p>Đồ uống:</p>
+            <p>Nước uống:</p>
             <Table striped bordered hover>
               <thead className="b-table-header">
                 <tr>
@@ -212,14 +221,12 @@ const CustomerBooking = () => {
               <thead className="b-table-header">
                 <tr>
                   <th>Tên</th>
-                  <th>Số lượng</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedBooking.services.map((service) => (
                   <tr key={service.service}>
                     <td>{findNameById(services, service.service)}</td>
-                    <td>{service.quantity}</td>
                   </tr>
                 ))}
               </tbody>

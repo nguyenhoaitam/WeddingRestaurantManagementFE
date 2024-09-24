@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import APIs, { endpoints } from "../../configs/APIs";
 import "./Hall.css";
-import { useEffect } from "react";
 
 const formatCurrency = (value) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
   }).format(value);
 };
 
@@ -44,13 +43,38 @@ const Hall = () => {
       }
 
       const response = await APIs.get(endpoints["wedding_halls"], { params });
-      setHalls(response.data);
+      const hallsWithBookingStatus = await checkBookingStatus(response.data);
+      setHalls(hallsWithBookingStatus);
       setError(false);
     } catch (error) {
       console.error("Lỗi khi nạp dữ liệu:", error);
       setHalls([]);
       setError(true);
     }
+  };
+
+  const checkBookingStatus = async (halls) => {
+    const rentalDate = filters.event_date || getCurrentDate();
+    const timeOfDay = filters.time;
+
+    const updatedHalls = await Promise.all(
+      halls.map(async (hall) => {
+        const response = await APIs.get(endpoints["check_booking_status"], {
+          params: {
+            rental_date: rentalDate,
+            time_of_day: timeOfDay,
+            wedding_hall_id: hall.id,
+          },
+        });
+
+        return {
+          ...hall,
+          is_booked: response.data.is_booked,
+        };
+      })
+    );
+
+    return updatedHalls;
   };
 
   useEffect(() => {
@@ -141,17 +165,27 @@ const Hall = () => {
           halls.map((hall) => (
             <div key={hall.id} className="card card-hall">
               {hall.images && hall.images.length > 0 ? (
-                <img className="card-img-hall" src={hall.images[0]} alt="Hall" />
+                <img
+                  className="card-img-hall"
+                  src={hall.images[0]}
+                  alt="Hall"
+                />
               ) : (
                 <div className="card-img-placeholder">
                   Ảnh của sảnh {hall.name}.
                 </div>
               )}
               <div className="card-body">
+                {hall.is_booked && (
+                  <span className="tag booked">Đã được đặt</span>
+                )}
                 <h5 className="card-title">{hall.name}</h5>
                 <p className="card-text">Giá: {getPriceForTime(hall)}</p>
                 <div className="button-group">
-                  <a href={`/wedding_hall/${hall.id}`} className="btn btn-primary">
+                  <a
+                    href={`/wedding_hall/${hall.id}`}
+                    className="btn btn-primary"
+                  >
                     Xem chi tiết
                   </a>
                   <a href="#order" className="btn btn-primary">

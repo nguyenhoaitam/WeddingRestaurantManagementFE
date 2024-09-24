@@ -11,6 +11,15 @@ const formatCurrency = (value) => {
   }).format(value);
 };
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 const Booking = () => {
   const [foods, setFoods] = useState([]);
   const [drinks, setDrinks] = useState([]);
@@ -286,6 +295,19 @@ const Booking = () => {
     if (rentalDate < currentDate) {
         alert("Ngày đặt tiệc không hợp lệ. Vui lòng chọn lại ngày!");
         return;
+    }
+
+    const response = await APIs.get(endpoints["check_booking_status"], {
+      params: {
+        rental_date: formData.rental_date,
+        time_of_day: formData.time_of_day,
+        wedding_hall_id: formData.wedding_hall,
+      },
+    });
+
+    if (response.data.is_booked) {
+      alert(`Sảnh bạn chọn đã có tiệc vào buổi "${formData.time_of_day}" ngày "${formatDate(formData.rental_date)}"!\nVui lòng chọn lại sảnh hoặc thời gian khác!`);
+      return;
     }
 
     const bookingData = {
