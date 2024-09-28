@@ -16,6 +16,7 @@ import Booking from "./components/Booking/Booking"
 import Payment from "./components/Payment/Payment"
 import CustomerBooking from "./components/CustomerBooking/CustomerBooking";
 import Feedback from "./components/Feedback/Feedback";
+import Statistical from "./components/Statistical/Statistical"
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="/payment" element={<Payment />} />
           <Route path="/customer_booking" element={<CustomerBooking />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/statistical" element={<Statistical />} />
         </Routes>
 
         <Footer />

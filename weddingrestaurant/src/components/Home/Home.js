@@ -94,7 +94,7 @@ const Home = () => {
           LÝ DO KHÁCH HÀNG LỰA CHỌN CHÚNG TÔI
         </h4>
         <div className="container">
-          <div className="row">
+          <div className="row wow fadeInUp" data-wow-duration="1s">
             {reasons.map((reason, index) => (
               <div className="col-4" key={index}>
                 <div className="card mb-4 reason-card">

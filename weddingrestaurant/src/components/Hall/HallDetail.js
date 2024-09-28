@@ -107,7 +107,7 @@ const HallDetail = () => {
       </div>
 
       <div className="button-group btn-booking">
-        <a href="#order" className="btn btn-primary">
+        <a href="/booking" className="btn btn-primary">
           Đặt ngay
         </a>
       </div>

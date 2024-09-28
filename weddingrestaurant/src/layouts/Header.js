@@ -31,9 +31,9 @@ const Header = () => {
     if (!user) {
       return (
         <>
-          <Nav.Link href="#4">Tin Tức</Nav.Link>
-          <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
-          <Nav.Link href="#5">Đánh Giá</Nav.Link>
+          <Nav.Link href="#">Tin Tức</Nav.Link>
+          <Nav.Link href="#">Ưu Đãi</Nav.Link>
+          <Nav.Link href="/feedback">Đánh Giá</Nav.Link>
           <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
           <Button variant="primary btn-login" href="/login">
             Đăng Nhập
@@ -45,10 +45,10 @@ const Header = () => {
     if (user.user_role === "admin") {
       return (
         <>
-          <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
-          <Nav.Link href="#5">Xem Đánh Giá</Nav.Link>
-          <Nav.Link href="#5gg">Thống Kê</Nav.Link>
-          <Nav.Link href="/sss">Quản Lý</Nav.Link>
+          <Nav.Link href="#">Ưu Đãi</Nav.Link>
+          <Nav.Link href="/booking-review">Xem Đánh Giá</Nav.Link>
+          <Nav.Link href="/statistical">Thống Kê</Nav.Link>
+          <Nav.Link href="/management">Quản Lý</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
             className="user-dropdown"
@@ -67,10 +67,10 @@ const Header = () => {
     if (user.user_role === "staff") {
       return (
         <>
-          <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
-          <Nav.Link href="#5">Xem Đánh Giá</Nav.Link>
-          <Nav.Link href="#5gg">Xem Tiệc Đã Đặt</Nav.Link>
-          <Nav.Link href="/sss">Chat</Nav.Link>
+          <Nav.Link href="#">Ưu Đãi</Nav.Link>
+          <Nav.Link href="/booking-review">Xem Đánh Giá</Nav.Link>
+          <Nav.Link href="#">Xem Tiệc Đã Đặt</Nav.Link>
+          <Nav.Link href="/chat">Chat</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
             className="user-dropdown"
@@ -89,10 +89,10 @@ const Header = () => {
     if (user.user_role === "customer") {
       return (
         <>
-          <Nav.Link href="#11111">Ưu Đãi</Nav.Link>
+          <Nav.Link href="#">Ưu Đãi</Nav.Link>
           <Nav.Link href="/feedback">Đánh Giá</Nav.Link>
           <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
-          <Nav.Link href="/sss">Chat</Nav.Link>
+          <Nav.Link href="/chat">Chat</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
             className="user-dropdown"
@@ -134,32 +134,6 @@ const Header = () => {
           </Navbar.Brand>
 
           <Nav className="ms-auto header-nav">
-            {/* <Nav.Link href="#">Tin Tức</Nav.Link>
-            <Nav.Link href="#">Ưu Đãi</Nav.Link>
-            <Nav.Link href="#">Đánh Giá</Nav.Link>
-            <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
-            {user ? (
-              <NavDropdown
-                title={
-                  <img src={user.avatar} alt="Avatar" className="avatar" />
-                }
-                className="user-dropdown"
-              >
-                <NavDropdown.Item onClick={handleViewProfile}>
-                  Xem thông tin
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleViewBooking}>
-                  Tiệc đã đặt
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleLogout}>
-                  Đăng xuất
-                </NavDropdown.Item>
-              </NavDropdown>
-            ) : (
-              <Button variant="primary btn-login" href="/login">
-                Đăng Nhập
-              </Button>
-            )} */}
             {renderMenu()}
           </Nav>
         </Navbar.Collapse>

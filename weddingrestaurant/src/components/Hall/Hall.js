@@ -188,7 +188,7 @@ const Hall = () => {
                   >
                     Xem chi tiết
                   </a>
-                  <a href="#order" className="btn btn-primary">
+                  <a href="/booking" className="btn btn-primary">
                     Đặt ngay
                   </a>
                 </div>

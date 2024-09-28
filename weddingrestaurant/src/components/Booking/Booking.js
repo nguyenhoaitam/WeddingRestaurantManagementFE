@@ -54,7 +54,7 @@ const Booking = () => {
     wedding_hall: "",
     rental_date: "",
     time_of_day: "",
-    payment_method: "Tiền mặt",
+    payment_method: "",
     selectedFoods: [],
     selectedDrinks: [],
     selectedServices: [],
@@ -648,7 +648,7 @@ const Booking = () => {
       </div>
       <p className="hall-price">Giá sảnh: {formatCurrency(hallPrice)}</p>
 
-      <h3>Tổng giá: {formatCurrency(totalPrice)}</h3>
+      <h3>Tổng cộng: {formatCurrency(totalPrice)}</h3>
 
       <div className="booking-btn-container">
         <button type="submit" className="booking-btn" onClick={handleSubmit}>

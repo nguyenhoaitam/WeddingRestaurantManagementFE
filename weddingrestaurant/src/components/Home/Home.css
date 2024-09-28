@@ -68,11 +68,16 @@ html {
 
 .reason-card img {
   border-radius: 0;
+  padding: 4px;
 }
 
 .reason-card .card-title {
   font-size: 1.2rem;
   color: var(--button-color);
+}
+
+.reason-card .card-body {
+  margin-bottom: 12px;
 }
 
 .luxury-hall {

@@ -1,0 +1,58 @@
+.stat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.controls {
+    display: flex; /* Sử dụng flexbox để căn chỉnh các điều khiển */
+    justify-content: space-between; /* Giãn cách đều các điều khiển */
+    margin-bottom: 20px; /* Thêm khoảng cách dưới các điều khiển */
+}
+
+label {
+    flex: 1; /* Mỗi label chiếm không gian bằng nhau */
+    margin-right: 10px; /* Thêm khoảng cách bên phải */
+}
+
+select {
+    width: 100%; /* Đặt chiều rộng cho select */
+    padding: 8px; /* Thêm khoảng đệm bên trong */
+    border: 1px solid #ccc; /* Đường viền nhẹ */
+    border-radius: 4px; /* Bo tròn góc */
+    font-size: 14px; /* Kích thước chữ */
+}
+
+.loading {
+    text-align: center; /* Căn giữa thông báo tải */
+    font-size: 16px; /* Kích thước chữ lớn hơn một chút */
+    color: #007BFF; /* Màu xanh */
+}
+
+table {
+    width: 100%; /* Đặt chiều rộng cho bảng */
+    border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
+    margin-top: 20px; /* Thêm khoảng cách trên bảng */
+}
+
+th, td {
+    padding: 10px; /* Thêm khoảng đệm cho các ô */
+    text-align: left; /* Căn trái nội dung */
+    border-bottom: 1px solid #ccc; /* Đường viền dưới cho ô */
+}
+
+th {
+    background-color: #007BFF; /* Màu nền cho tiêu đề bảng */
+    color: white; /* Màu chữ cho tiêu đề bảng */
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1; /* Hiệu ứng hover cho hàng trong bảng */
+}
+
+.chart-container {
+    margin-top: 20px; /* Thêm khoảng cách trên biểu đồ */
+}
