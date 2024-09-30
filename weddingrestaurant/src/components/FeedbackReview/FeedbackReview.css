@@ -1,0 +1,45 @@
+.feedback-rv-container {
+  width: 80%;
+  margin: 50px auto;
+}
+
+.feedback-rv-container .feedback-card {
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feedback-rv-container .feedback-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-rv-container .feedback-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #343a40;
+  margin: 20px 0;
+}
+
+.text-muted {
+    margin: 10px 0;
+    padding-left: 0;
+}
+
+.load-more-btn {
+  background-color: var(--button-color);
+  color: white;
+  border-radius: 25px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.load-more-btn:hover {
+  background-color: var(--button-color);
+}
+
+@media (max-width: 768px) {
+  .feedback-card {
+    margin-bottom: 20px;
+  }
+}

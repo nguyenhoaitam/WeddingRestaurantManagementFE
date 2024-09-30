@@ -5,6 +5,7 @@ import APIs, { endpoints } from "../../configs/APIs";
 import "./Payment.css";
 import { Button, Spinner, Modal } from "react-bootstrap";
 import defaultPaymentImg from "../../assets/images/transaction.png";
+import {formatCurrency} from "../Base/Base"
 
 const Payment = () => {
   const location = useLocation();
@@ -209,6 +210,8 @@ const Payment = () => {
     <div className="payment-container">
       <div className="payment">
         <h1>Thanh toán</h1>
+
+        <h5 className="lable-price">Số tiền cần thanh toán: {formatCurrency(totalPrice)}</h5>
 
         <div className="payment-methods">
           {paymentMethods.map(renderPaymentMethod)}

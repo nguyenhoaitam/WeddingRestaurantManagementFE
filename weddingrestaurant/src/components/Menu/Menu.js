@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Pagination, Row, Tab, Tabs } from "react-bootstrap";
 import "./Menu.css";
 import APIs, { endpoints } from "../../configs/APIs";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(value);
-};
+import { formatCurrency } from "../Base/Base"
 
 const Menu = () => {
   const [key, setKey] = useState("food");

@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, Col, Pagination, Row } from "react-bootstrap";
 import "./Service.css";
 import APIs, { endpoints } from "../../configs/APIs";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(value);
-};
+import { formatCurrency } from "../Base/Base"
 
 const Service = () => {
   const [services, setServices] = useState([]);

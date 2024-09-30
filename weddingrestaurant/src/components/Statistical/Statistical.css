@@ -1,58 +1,87 @@
+.stat-title {
+    text-align: center;
+    margin-top: 20px;
+}
+
 .stat-container {
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 2rem auto;
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    min-height: 100vh;
 }
 
 .controls {
-    display: flex; /* Sử dụng flexbox để căn chỉnh các điều khiển */
-    justify-content: space-between; /* Giãn cách đều các điều khiển */
-    margin-bottom: 20px; /* Thêm khoảng cách dưới các điều khiển */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 label {
-    flex: 1; /* Mỗi label chiếm không gian bằng nhau */
-    margin-right: 10px; /* Thêm khoảng cách bên phải */
+    flex: 1;
+    margin-right: 10px;
 }
 
 select {
-    width: 100%; /* Đặt chiều rộng cho select */
-    padding: 8px; /* Thêm khoảng đệm bên trong */
-    border: 1px solid #ccc; /* Đường viền nhẹ */
-    border-radius: 4px; /* Bo tròn góc */
-    font-size: 14px; /* Kích thước chữ */
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .loading {
-    text-align: center; /* Căn giữa thông báo tải */
-    font-size: 16px; /* Kích thước chữ lớn hơn một chút */
-    color: #007BFF; /* Màu xanh */
+    text-align: center;
+    font-size: 16px;
+    color: var(--text-color);
 }
 
-table {
-    width: 100%; /* Đặt chiều rộng cho bảng */
-    border-collapse: collapse; /* Xóa khoảng cách giữa các ô */
-    margin-top: 20px; /* Thêm khoảng cách trên bảng */
+.stat-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-th, td {
-    padding: 10px; /* Thêm khoảng đệm cho các ô */
-    text-align: left; /* Căn trái nội dung */
-    border-bottom: 1px solid #ccc; /* Đường viền dưới cho ô */
+.stat-table th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
 }
 
-th {
-    background-color: #007BFF; /* Màu nền cho tiêu đề bảng */
-    color: white; /* Màu chữ cho tiêu đề bảng */
+.stat-table th {
+    background-color: var(--button-color);
+    color: white;
 }
 
-tbody tr:hover {
-    background-color: #f1f1f1; /* Hiệu ứng hover cho hàng trong bảng */
+.stat-table tbody tr:hover {
+    background-color: #f1f1f1;
 }
 
 .chart-container {
-    margin-top: 20px; /* Thêm khoảng cách trên biểu đồ */
+    margin-top: 20px;
+}
+
+.export-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+.export-buttons button {
+    padding: 10px;
+    background-color: var(--button-color);
+    border: none;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.export-buttons button:hover {
+    background-color: var(--hover-color);
+}
+
+.table-title {
+    margin-top: 30px;
 }

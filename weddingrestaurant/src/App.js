@@ -17,6 +17,7 @@ import Payment from "./components/Payment/Payment"
 import CustomerBooking from "./components/CustomerBooking/CustomerBooking";
 import Feedback from "./components/Feedback/Feedback";
 import Statistical from "./components/Statistical/Statistical"
+import FeedbackReview from "./components/FeedbackReview/FeedbackReview"
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           <Route path="/customer_booking" element={<CustomerBooking />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/statistical" element={<Statistical />} />
+          <Route path="/feedback_review" element={<FeedbackReview />} />
         </Routes>
 
         <Footer />

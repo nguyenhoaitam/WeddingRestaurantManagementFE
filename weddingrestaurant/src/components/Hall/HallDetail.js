@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import "./HallDetail.css";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(value);
-};
+import { formatCurrency } from "../Base/Base"
 
 const HallDetail = () => {
   const { hallId } = useParams();

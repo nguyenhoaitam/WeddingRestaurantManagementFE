@@ -4,13 +4,7 @@ import APIs, { endpoints } from "../../configs/APIs";
 import { useContext } from "react";
 import { MyUserContext } from "../../configs/Contexts";
 import "./CustomerBooking.css";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND',
-  }).format(value);
-};
+import { formatCurrency } from "../Base/Base";
 
 const CustomerBooking = () => {
   const [bookings, setBookings] = useState([]);
@@ -88,7 +82,7 @@ const CustomerBooking = () => {
 
   const handleShowDetails = (booking) => {
     setSelectedBooking(booking);
-    console.log(booking)
+    console.log(booking);
     setShowModal(true);
   };
 
@@ -166,10 +160,7 @@ const CustomerBooking = () => {
             <p>Tên bữa tiệc: {selectedBooking.name}</p>
             <p>Mô tả: {selectedBooking.description}</p>
             <p>Số lượng bàn: {selectedBooking.table_quantity}</p>
-            <p>
-              Ngày đặt:{" "}
-              {new Date(selectedBooking.created_date).toLocaleString()}
-            </p>
+            <p>Ngày đặt: {formatDate(selectedBooking.created_date)}</p>
             <p>Ngày tổ chức: {formatDate(selectedBooking.rental_date)}</p>
             <p>Buổi tổ chức: {selectedBooking.time_of_day}</p>
             <p>Phương thức thanh toán: {selectedBooking.payment_method}</p>

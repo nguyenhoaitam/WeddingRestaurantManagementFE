@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import APIs, { endpoints } from "../../configs/APIs";
 import "./Hall.css";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(value);
-};
+import { formatCurrency } from "../Base/Base"
 
 const Hall = () => {
   const [halls, setHalls] = useState([]);

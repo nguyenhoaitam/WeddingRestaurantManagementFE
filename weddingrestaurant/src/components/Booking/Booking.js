@@ -3,22 +3,7 @@ import "./Booking.css";
 import { BsArrowRightCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import APIs, { authApi, endpoints } from "../../configs/APIs";
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(value);
-};
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
-};
+import { formatCurrency, formatDate } from "../Base/Base";
 
 const Booking = () => {
   const [foods, setFoods] = useState([]);
@@ -61,12 +46,12 @@ const Booking = () => {
     drinkQuantities: "",
   });
 
-//   useEffect(() => {
-//     const storedData = localStorage.getItem("bookingFormData");
-//     if (storedData) {
-//         setFormData(JSON.parse(storedData));
-//     }
-// }, []);
+  //   useEffect(() => {
+  //     const storedData = localStorage.getItem("bookingFormData");
+  //     if (storedData) {
+  //         setFormData(JSON.parse(storedData));
+  //     }
+  // }, []);
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -293,8 +278,8 @@ const Booking = () => {
     const currentDate = new Date();
 
     if (rentalDate < currentDate) {
-        alert("Ngày đặt tiệc không hợp lệ. Vui lòng chọn lại ngày!");
-        return;
+      alert("Ngày đặt tiệc không hợp lệ. Vui lòng chọn lại ngày!");
+      return;
     }
 
     const response = await APIs.get(endpoints["check_booking_status"], {
@@ -306,7 +291,13 @@ const Booking = () => {
     });
 
     if (response.data.is_booked) {
-      alert(`Sảnh bạn chọn đã có tiệc vào buổi "${formData.time_of_day}" ngày "${formatDate(formData.rental_date)}"!\nVui lòng chọn lại sảnh hoặc thời gian khác!`);
+      alert(
+        `Sảnh bạn chọn đã có tiệc vào buổi "${
+          formData.time_of_day
+        }" ngày "${formatDate(
+          formData.rental_date
+        )}"!\nVui lòng chọn lại sảnh hoặc thời gian khác!`
+      );
       return;
     }
 
@@ -352,7 +343,8 @@ const Booking = () => {
 
     navigate("/payment", {
       state: {
-        bookingData, totalPrice
+        bookingData,
+        totalPrice,
       },
     });
   };

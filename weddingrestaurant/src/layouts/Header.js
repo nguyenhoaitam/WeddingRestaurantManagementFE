@@ -46,7 +46,7 @@ const Header = () => {
       return (
         <>
           <Nav.Link href="#">Ưu Đãi</Nav.Link>
-          <Nav.Link href="/booking-review">Xem Đánh Giá</Nav.Link>
+          <Nav.Link href="/feedback_review">Xem Đánh Giá</Nav.Link>
           <Nav.Link href="/statistical">Thống Kê</Nav.Link>
           <Nav.Link href="/management">Quản Lý</Nav.Link>
           <NavDropdown
@@ -68,7 +68,7 @@ const Header = () => {
       return (
         <>
           <Nav.Link href="#">Ưu Đãi</Nav.Link>
-          <Nav.Link href="/booking-review">Xem Đánh Giá</Nav.Link>
+          <Nav.Link href="/feedback_review">Xem Đánh Giá</Nav.Link>
           <Nav.Link href="#">Xem Tiệc Đã Đặt</Nav.Link>
           <Nav.Link href="/chat">Chat</Nav.Link>
           <NavDropdown
