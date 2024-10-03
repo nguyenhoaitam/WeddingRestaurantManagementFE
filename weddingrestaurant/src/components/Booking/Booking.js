@@ -53,20 +53,20 @@ const Booking = () => {
   //     }
   // }, []);
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const storedToken = localStorage.getItem("token");
-        if (!storedToken) {
-          navigate("/login");
-        } else {
-          setToken(storedToken);
-        }
-      } catch (error) {
-        alert("Không thể lấy tài nguyên");
+  const fetchToken = async () => {
+    try {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) {
+        navigate("/login");
+      } else {
+        setToken(storedToken);
       }
-    };
+    } catch (error) {
+      alert("Không thể lấy tài nguyên");
+    }
+  };
 
+  useEffect(() => {
     fetchToken();
   }, [navigate]);
 

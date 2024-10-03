@@ -51,17 +51,6 @@ html {
   filter: invert(100%);
 }
 
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #004085;
-}
-
 .reason-title {
   margin: 30px 10px;
 }
@@ -84,7 +73,7 @@ html {
   position: relative;
   width: 100%;
   height: 600px;
-  background-image: url('https://res.cloudinary.com/dkmurrwq5/image/upload/v1724912986/sk8avxmqsgsruinr0vpd.webp');
+  background-image: url("https://res.cloudinary.com/dkmurrwq5/image/upload/v1724912986/sk8avxmqsgsruinr0vpd.webp");
   background-size: cover;
   background-position: center;
   margin: 40px 0;
@@ -96,7 +85,11 @@ html {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to bottom, rgb(209, 200, 200), rgba(255, 255, 255, 0));
+  background: linear-gradient(
+    to bottom,
+    rgb(209, 200, 200),
+    rgba(255, 255, 255, 0)
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,4 +113,77 @@ html {
   background-color: var(--button-color);
   border: none;
   margin-top: 15px;
+}
+
+@media (max-width: 1024px) {
+  .luxury-hall .luxury-hall-btn {
+    width: 20%;
+    padding: 20px 10px;
+  }
+
+  .reason-card img {
+    padding: 20px;
+  }
+
+  .reason-title {
+    font-size: 28px;
+  }
+
+  .reason-card .card-title {
+    font-size: 1.4rem;
+  }
+
+  .reason-card .card-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  
+  .reason-card img {
+    width: 100%;
+  }
+
+  .reason-card .card-title {
+    font-size: 1rem;
+  }
+
+  .reason-card .card-text {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+  .reason-card .card-body {
+    margin-bottom: 8px;
+    padding: 0 20px;
+  }
+
+  .luxury-hall .luxury-hall-btn {
+    width: 30%;
+    padding: 10px 10px;
+  }
+
+  .carousel-caption.caption h3 {
+    font-size: 0.7rem;
+  }
+
+  .carousel-caption.caption p {
+    font-size: 0.5rem;
+  }
+
+  .carousel-control-prev-icon, .carousel-control-next-icon {
+    width: 20px;
+  }
+
+  .reason-title {
+    font-size: 20px;
+  }
+
+  .luxury-hall .title {
+    font-size: 1.2rem;
+  }
+
+  .luxury-hall .description {
+    font-size: 1rem;
+  }
 }

@@ -176,3 +176,22 @@ textarea {
   font-size: 20px;
   font-weight: bold;
 }
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+  .booking-container,
+  .selected-items {
+    display: block;
+  }
+
+  .booking-container .left-section,
+  .booking-container .right-section {
+    width: 100%;
+  }
+
+  .selected-items div {
+    width: 100%;
+  }
+}

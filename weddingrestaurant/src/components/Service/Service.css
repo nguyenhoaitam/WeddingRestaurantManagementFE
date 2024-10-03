@@ -4,10 +4,6 @@
   margin: 0 auto;
 }
 
-.service-section {
-  margin-top: 20px;
-}
-
 .sort-service {
   margin: 5px 0;
   height: 50px;
@@ -35,7 +31,7 @@
 
 .service-list {
   margin-top: 20px;
-  min-height: 1150px;
+  min-height: 50vh;
 }
 
 .service-type-chip {
@@ -88,4 +84,36 @@
 
 .pagination .page-link:hover {
     color: var(--dark-color);
+}
+
+.service-container .search-container {
+  margin: 10px 0;
+}
+
+@media screen and (max-width: 768px) {
+  .service-container {
+    width: 98%;
+  }
+
+  .service-container .search-input {
+    border-radius: 0;
+  }
+
+  .service-container .card-body {
+    padding: 10px 20px;
+  }
+
+  .col-md-4 {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .service-container {
+    padding: 10px;;
+  }
+
+  .col-md-4 {
+    width: 100%;
+  }
 }

@@ -96,7 +96,7 @@ const Home = () => {
         <div className="container">
           <div className="row wow fadeInUp" data-wow-duration="1s">
             {reasons.map((reason, index) => (
-              <div className="col-4" key={index}>
+              <div className="col-12 col-lg-4" key={index}>
                 <div className="card mb-4 reason-card">
                   <img
                     src={reason.imgSrc}

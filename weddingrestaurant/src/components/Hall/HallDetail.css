@@ -71,3 +71,26 @@
   display: flex;
   justify-content: center;
 }
+
+@media screen and (max-width: 768px) {
+  .hall-detail-container {
+    width: 98%;
+  }
+
+  .hall-detail-main {
+    display: block;
+  }
+
+  .hall-detail-images {
+    width: 100%;
+  }
+
+  .hall-detail-info {
+    width: 100%;
+    padding: 10px;
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+}

@@ -61,41 +61,10 @@
 
 @media (max-width: 991px) {
   .navbar-brand {
-    margin: 0 auto;
-  }
-
-  .header .navbar-collapse {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .header .navbar-brand {
-    margin-bottom: 10px;
-  }
-
-  .header-nav {
-    text-align: center;
-    width: 100%;
-  }
-
-  .header-nav .nav-link {
-    margin: 10px 0;
-  }
-
-  .btn-primary {
-    width: 100%;
-    margin-top: 10px;
+    display: none;
   }
 }
 
 @media (max-width: 576px) {
-  .navbar-nav {
-    text-align: center;
-  }
-
-  .btn-primary {
-    width: 100%;
-    margin-top: 10px;
-  }
+  
 }

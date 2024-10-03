@@ -145,3 +145,24 @@ form .form-control {
   margin: 0;
   margin-right: 10px;
 }
+
+
+@media screen and (max-width: 768px) {
+  .user-container .user-image {
+    display: none;
+  }
+  
+  
+  .user-form-container {
+    border-radius: 10px;
+  }
+
+  .user-form {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+
+}

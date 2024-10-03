@@ -55,11 +55,11 @@
 }
 
 .footer-col .nav-link:focus {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .footer-col .nav-link:hover {
-    color: var(--text-color);
+  color: var(--text-color);
 }
 
 .social-icons {
@@ -73,13 +73,19 @@
 }
 
 .social-icons .nav-link:hover .social-icon {
-    transform: scale(1.1);
-    filter: brightness(1.2);
-  }
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
 
 .footer-copy {
   font-size: 13px;
   color: #b5b5b5;
   text-align: center;
   margin: 0 0 10px;
+}
+
+@media (max-width: 1024px) {
+  .footer-logo {
+    max-width: 135px;
+  }
 }

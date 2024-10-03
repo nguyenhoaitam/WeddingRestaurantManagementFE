@@ -3,6 +3,8 @@ import { Modal, Button, Form, Card } from "react-bootstrap";
 import "./Feedback.css";
 import APIs, { endpoints } from "../../configs/APIs";
 import { MyUserContext } from "../../configs/Contexts";
+import { formatDate, formatCurrency } from "../Base/Base";
+import { useNavigate } from "react-router-dom";
 
 const Feedback = () => {
   const user = useContext(MyUserContext);
@@ -10,8 +12,24 @@ const Feedback = () => {
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [content, setContent] = useState("");
   const [rating, setRating] = useState(1);
-  const [feedbackId, setFeedbackId] = useState(null); 
+  const [feedbackId, setFeedbackId] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const navigate = useNavigate();
+
+  const fetchToken = async () => {
+    try {
+      const storedToken = localStorage.getItem("token");
+      if (!storedToken) {
+        navigate("/login");
+      }
+    } catch (error) {
+      alert("Không thể lấy tài nguyên");
+    }
+  };
+
+  useEffect(() => {
+    fetchToken();
+  }, [navigate]);
 
   const fetchBookings = async () => {
     try {
@@ -30,20 +48,24 @@ const Feedback = () => {
   const fetchFeedback = async (bookingId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await APIs.get(`${endpoints.feedback}?wedding_booking_id=${bookingId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await APIs.get(
+        `${endpoints.booking}${bookingId}/feedbacks/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res.data);
       if (res.data.length > 0) {
-        const feedback = res.data[0]; 
+        const feedback = res.data[0];
         setContent(feedback.content);
         setRating(feedback.rating);
-        setFeedbackId(feedback.id); 
+        setFeedbackId(feedback.id);
       } else {
         setContent("");
         setRating(1);
-        setFeedbackId(null); 
+        setFeedbackId(null);
       }
     } catch (error) {
       console.error("Lỗi khi lấy đánh giá:", error);
@@ -58,7 +80,7 @@ const Feedback = () => {
 
   const openFeedbackModal = async (bookingId) => {
     setSelectedBookingId(bookingId);
-    await fetchFeedback(bookingId); 
+    await fetchFeedback(bookingId);
   };
 
   const closeFeedbackModal = () => {
@@ -85,15 +107,23 @@ const Feedback = () => {
 
     formData.append("content", content);
     formData.append("rating", rating);
-    formData.append("wedding_booking_id", selectedBookingId);
+    formData.append("wedding_booking", selectedBookingId);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
 
     try {
       if (feedbackId) {
-        const response = await APIs.put(endpoints.feedback_detail(feedbackId), formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await APIs.put(
+          endpoints.feedback_detail(feedbackId),
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         alert("Đánh giá của bạn đã được cập nhật!");
       } else {
         const response = await APIs.post(endpoints.feedback, formData, {
@@ -106,7 +136,10 @@ const Feedback = () => {
       closeFeedbackModal();
       await fetchBookings();
     } catch (error) {
-      console.error("Lỗi khi gửi hoặc cập nhật đánh giá:", error.response ? error.response.data : error.message);
+      console.error(
+        "Lỗi khi gửi hoặc cập nhật đánh giá:",
+        error.response ? error.response.data : error.message
+      );
       alert("Có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
@@ -125,7 +158,10 @@ const Feedback = () => {
       closeFeedbackModal();
       await fetchBookings();
     } catch (error) {
-      console.error("Lỗi khi xóa đánh giá:", error.response ? error.response.data : error.message);
+      console.error(
+        "Lỗi khi xóa đánh giá:",
+        error.response ? error.response.data : error.message
+      );
       alert("Có lỗi xảy ra. Vui lòng thử lại.");
     }
   };
@@ -139,22 +175,6 @@ const Feedback = () => {
     setShowDeleteConfirm(false);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  };
-
-  const formatCurrency = (value) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(value);
-  };
-
   return (
     <div className="feedback-container">
       <h3 className="text-center feedback-title">Đánh giá bữa tiệc đã đặt</h3>
@@ -162,10 +182,19 @@ const Feedback = () => {
         <Card key={booking.id} className="text-center">
           <Card.Header as="h5">{booking.name}</Card.Header>
           <Card.Body>
-            <Card.Title>Tổng giá: {formatCurrency(booking.total_price)}</Card.Title>
-            <Card.Text>Ngày tổ chức: {formatDate(booking.rental_date)}</Card.Text>
-            <Button className="feedback-btn" onClick={() => openFeedbackModal(booking.id)}>
-              {feedbackId && selectedBookingId === booking.id ? "Xem đánh giá" : "Đánh giá"}
+            <Card.Title>
+              Tổng giá: {formatCurrency(booking.total_price)}
+            </Card.Title>
+            <Card.Text>
+              Ngày tổ chức: {formatDate(booking.rental_date)}
+            </Card.Text>
+            <Button
+              className="feedback-btn"
+              onClick={() => openFeedbackModal(booking.id)}
+            >
+              {feedbackId && selectedBookingId === booking.id
+                ? "Xem đánh giá"
+                : "Đánh giá"}
             </Button>
           </Card.Body>
         </Card>
@@ -207,24 +236,41 @@ const Feedback = () => {
           <Modal.Footer>
             {feedbackId && (
               <>
-                <Button variant="danger" onClick={confirmDelete}>Xóa đánh giá</Button>
+                <Button variant="danger" onClick={confirmDelete}>
+                  Xóa đánh giá
+                </Button>
               </>
             )}
-            <Button variant="secondary" onClick={closeFeedbackModal}>Đóng</Button>
-            <Button className="md-feedback-btn" variant="primary" onClick={handleSubmit}>
-              {feedbackId ? 'Cập nhật đánh giá' : 'Gửi đánh giá'}
+            <Button
+              variant="secondary close_fb_btn"
+              onClick={closeFeedbackModal}
+            >
+              Đóng
+            </Button>
+            <Button
+              className="md-feedback-btn"
+              variant="primary"
+              onClick={handleSubmit}
+            >
+              {feedbackId ? "Cập nhật đánh giá" : "Gửi đánh giá"}
             </Button>
           </Modal.Footer>
         </Modal>
       )}
 
-      <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)}>
+      <Modal
+        show={showDeleteConfirm}
+        onHide={() => setShowDeleteConfirm(false)}
+      >
         <Modal.Header closeButton className="header-comfirm-delete">
           <Modal.Title>Xác nhận xóa đánh giá</Modal.Title>
         </Modal.Header>
         <Modal.Body>Bạn có chắc chắn muốn xóa đánh giá này không?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
+          <Button
+            variant="secondary"
+            onClick={() => setShowDeleteConfirm(false)}
+          >
             Hủy
           </Button>
           <Button variant="danger" onClick={handleConfirmDelete}>

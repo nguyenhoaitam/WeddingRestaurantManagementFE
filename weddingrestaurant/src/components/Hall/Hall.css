@@ -53,14 +53,14 @@
 }
 
 .button-group > a {
-    background-color: var(--button-color);
-    border: none;
+  background-color: var(--button-color);
+  border: none;
 }
 
 .btn.btn-primary:focus,
 .btn.btn-primary:active,
 .btn.btn-primary:hover {
-    background-color: var(--hover-color);
+  background-color: var(--hover-color);
 }
 
 .card {
@@ -77,4 +77,43 @@
   border-radius: 0 0 10px 10px;
   font-size: 14px;
   z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-container {
+    width: calc(100% - 20px);
+  }
+
+  .hall-container{
+    width: 100%;
+  }
+
+  .hall-container .card-body {
+    padding: 10px;
+  }
+
+  .card.card-hall {
+    max-width: 48%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .card.card-hall {
+    flex: 1 1 calc(100% - 10px);
+    max-width: 95%;
+  }
+
+  .filter-container {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .filter-container .search-input,
+  .price-select,
+  .session-select,
+  .date-picker {
+    flex: 1;
+    width: 95%;
+  }
 }

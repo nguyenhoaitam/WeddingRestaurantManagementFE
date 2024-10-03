@@ -48,3 +48,17 @@
 .input-file {
   flex-grow: 1;
 }
+
+@media screen and (max-width: 768px) {
+  .user-form.register-form {
+    padding: 1rem;
+  }
+
+  .user-form.register-form {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+
+}

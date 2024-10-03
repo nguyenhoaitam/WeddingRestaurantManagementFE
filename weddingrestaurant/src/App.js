@@ -18,6 +18,8 @@ import CustomerBooking from "./components/CustomerBooking/CustomerBooking";
 import Feedback from "./components/Feedback/Feedback";
 import Statistical from "./components/Statistical/Statistical"
 import FeedbackReview from "./components/FeedbackReview/FeedbackReview"
+import Chat from "./components/Chat/Chat";
+import ContactList from "./components/Chat/ContactList";
 
 const App = () => {
   return (
@@ -40,6 +42,8 @@ const App = () => {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/statistical" element={<Statistical />} />
           <Route path="/feedback_review" element={<FeedbackReview />} />
+          {/* <Route path="/contact_list" element={<ContactList />} />
+          <Route path="/chat/:wedding_booking_id" element={<Chat />} /> */}
         </Routes>
 
         <Footer />

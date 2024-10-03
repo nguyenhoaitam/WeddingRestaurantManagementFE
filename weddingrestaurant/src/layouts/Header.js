@@ -70,7 +70,7 @@ const Header = () => {
           <Nav.Link href="#">Ưu Đãi</Nav.Link>
           <Nav.Link href="/feedback_review">Xem Đánh Giá</Nav.Link>
           <Nav.Link href="#">Xem Tiệc Đã Đặt</Nav.Link>
-          <Nav.Link href="/chat">Chat</Nav.Link>
+          <Nav.Link href="/contact_list">Nhắn tin</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
             className="user-dropdown"
@@ -92,7 +92,7 @@ const Header = () => {
           <Nav.Link href="#">Ưu Đãi</Nav.Link>
           <Nav.Link href="/feedback">Đánh Giá</Nav.Link>
           <Nav.Link href="/booking">Đặt Tiệc</Nav.Link>
-          <Nav.Link href="/chat">Chat</Nav.Link>
+          <Nav.Link href="/contact_list">Nhắn tin</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
             className="user-dropdown"

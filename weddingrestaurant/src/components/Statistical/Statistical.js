@@ -41,34 +41,64 @@ const Statistical = () => {
         let response;
         // Mật độ
         if (selectedType === "density") {
+          const token = localStorage.getItem("token");
           if (selectedTime === "month") {
             response = await APIs.get(
-              endpoints.statistics + "monthly-density/?year=" + selectedYear
+              endpoints.statistics + "monthly-density/?year=" + selectedYear,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
             setReportData(response.data.monthly_density || []);
           } else if (selectedTime === "quarter") {
             response = await APIs.get(
-              endpoints.statistics + "quarterly-density/?year=" + selectedYear
+              endpoints.statistics + "quarterly-density/?year=" + selectedYear,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
             setReportData(response.data.quarterly_density || []);
           } else {
-            response = await APIs.get(endpoints.statistics + "yearly-density/");
+            response = await APIs.get(endpoints.statistics + "yearly-density/", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             setReportData(response.data.yearly_density || []);
           }
         } else {
           // Doanh thu
+          const token = localStorage.getItem("token");
           if (selectedTime === "month") {
             response = await APIs.get(
-              endpoints.statistics + "monthly-revenue/?year=" + selectedYear
+              endpoints.statistics + "monthly-revenue/?year=" + selectedYear,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
             setReportData(response.data.monthly_revenue || []);
           } else if (selectedTime === "quarter") {
             response = await APIs.get(
-              endpoints.statistics + "quarterly-revenue/?year=" + selectedYear
+              endpoints.statistics + "quarterly-revenue/?year=" + selectedYear,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             );
             setReportData(response.data.quarterly_revenue || []);
           } else {
-            response = await APIs.get(endpoints.statistics + "yearly-revenue/");
+            response = await APIs.get(endpoints.statistics + "yearly-revenue/", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             setReportData(response.data.yearly_revenue || []);
           }
         }

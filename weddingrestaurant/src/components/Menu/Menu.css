@@ -9,10 +9,6 @@ body {
   margin: 0 auto;
 }
 
-.food-section {
-  padding: 20px;
-}
-
 .food-type-container {
   display: flex;
   flex-wrap: wrap;
@@ -43,10 +39,6 @@ body {
 
 .food-item:last-child {
   border-bottom: none;
-}
-
-.drink-section {
-  padding: 20px;
 }
 
 .sort-drink {
@@ -101,7 +93,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem;
+  margin: 1rem 0;
 }
 
 .search-container .search-input {
@@ -131,4 +123,14 @@ body {
 
 .pagination .page-link:hover {
   color: var(--dark-color);
+}
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 576px) {
+  .menu-container .sort-container {
+    display: block;
+  }
 }
