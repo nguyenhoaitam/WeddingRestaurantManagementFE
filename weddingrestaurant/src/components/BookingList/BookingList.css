@@ -1,0 +1,47 @@
+.booking-list-container {
+  padding: 20px;
+}
+
+.booking-list-container .booking-card {
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  border: 1px solid #e1e1e1;
+}
+
+.booking-list-container .booking-card .card-header {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: #007bff;
+  color: #fff;
+  border-bottom: 1px solid #e1e1e1;
+  padding: 10px;
+}
+
+.booking-list-container .booking-card .card-body {
+  padding: 15px;
+}
+
+.booking-list-container .booking-card .card-text {
+  margin-bottom: 10px;
+}
+
+.booking-list-container .booking-card .text-muted {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.booking-list-container .booking-card .list-inline-item {
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.booking-list-container .booking-card-footer {
+  background-color: #f1f1f1;
+  padding: 10px;
+  text-align: center;
+}
+
+.btn-assign-staff {
+  margin-bottom: 10px;
+}

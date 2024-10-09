@@ -1,78 +1,79 @@
-/* .container {
-    display: flex;
-    flex-direction: column;
-    padding: 4px;
-    background-color: #dee1d7;
-    min-height: 100vh;
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  background-color: #dee1d7;
+  min-height: 100vh;
+}
+
+.group-contaier {
+  width: 80%;
+  margin: 0 auto;
 }
 
 .TopBackGround {
-    width: 100%;
-    background-color: #747958;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 5px;
-    margin-bottom: 20px;
+  width: 100%;
+  background-color: var(--button-color);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 20px;
 }
 
 .greeting {
-    margin: 0;
-    font-size: 24px;
-    font-weight: bold;
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .searchInput {
-    width: 100%;
-    max-width: 400px;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #747958;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-left: 50px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid var(--button-color);
+  border-radius: 4px;
+  font-size: 16px;
 }
 
 .listContainer {
-    width: 100%;
-    max-width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 50px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .chat {
-    width: 100%;
-    margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .contactItem {
-    width: 100%;
-    padding: 15px;
-    background-color: #a3a88a;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-    text-align: left;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: #f0f0f0;
+  width: 100%;
+  padding: 15px;
+  background-color: var(--button-color);
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #f0f0f0;
 }
 
 .contactItem:hover {
-    background-color: #747958;
+  background-color: var(--hover-color);
 }
 
 .spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
 }
 
 .noDataText {
-    color: #888;
-    font-size: 18px;
-} */
+  color: #888;
+  font-size: 18px;
+}

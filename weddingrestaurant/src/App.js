@@ -12,14 +12,16 @@ import Hall from "./components/Hall/Hall";
 import Menu from "./components/Menu/Menu";
 import Service from "./components/Service/Service";
 import HallDetail from "./components/Hall/HallDetail";
-import Booking from "./components/Booking/Booking"
-import Payment from "./components/Payment/Payment"
+import Booking from "./components/Booking/Booking";
+import Payment from "./components/Payment/Payment";
 import CustomerBooking from "./components/CustomerBooking/CustomerBooking";
 import Feedback from "./components/Feedback/Feedback";
-import Statistical from "./components/Statistical/Statistical"
-import FeedbackReview from "./components/FeedbackReview/FeedbackReview"
+import Statistical from "./components/Statistical/Statistical";
+import FeedbackReview from "./components/FeedbackReview/FeedbackReview";
 import Chat from "./components/Chat/Chat";
 import ContactList from "./components/Chat/ContactList";
+import BookingList from "./components/BookingList/BookingList";
+
 
 const App = () => {
   return (
@@ -42,8 +44,9 @@ const App = () => {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/statistical" element={<Statistical />} />
           <Route path="/feedback_review" element={<FeedbackReview />} />
-          {/* <Route path="/contact_list" element={<ContactList />} />
-          <Route path="/chat/:wedding_booking_id" element={<Chat />} /> */}
+          <Route path="/contact_list" element={<ContactList />} />
+          <Route path="/chat/:bookingId" element={<Chat />} />
+          <Route path="/booking_list" element={<BookingList />} />
         </Routes>
 
         <Footer />

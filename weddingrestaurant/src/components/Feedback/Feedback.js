@@ -19,7 +19,9 @@ const Feedback = () => {
   const fetchToken = async () => {
     try {
       const storedToken = localStorage.getItem("token");
+      console.log(storedToken)
       if (!storedToken) {
+        alert("Vui lòng đăng nhập để đánh giá")
         navigate("/login");
       }
     } catch (error) {

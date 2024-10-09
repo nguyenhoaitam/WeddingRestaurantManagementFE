@@ -166,7 +166,7 @@ const Payment = () => {
         payment_status: paymentStatus ? "Đã thanh toán" : "Chờ thanh toán",
         total_price: totalPrice,
         wedding_hall: bookingData.wedding_hall,
-        customer: user.id,
+        customer: bookingData.customer,
         event_type: bookingData.event_type,
         foods: bookingData.foods.map((food) => ({
           food: food.food,
@@ -181,6 +181,8 @@ const Payment = () => {
           quantity: service.quantity,
         })),
       };
+
+      console.log("data: ", JSON.stringify(dataToSubmit, null, 2));
 
       const res = await APIs.post(endpoints["booking"], dataToSubmit, {
         headers: {

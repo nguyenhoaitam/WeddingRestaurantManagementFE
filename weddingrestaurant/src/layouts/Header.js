@@ -45,7 +45,7 @@ const Header = () => {
     if (user.user_role === "admin") {
       return (
         <>
-          <Nav.Link href="#">Ưu Đãi</Nav.Link>
+          <Nav.Link href="/booking_list">Xem tiệc</Nav.Link>
           <Nav.Link href="/feedback_review">Xem Đánh Giá</Nav.Link>
           <Nav.Link href="/statistical">Thống Kê</Nav.Link>
           <Nav.Link href="/management">Quản Lý</Nav.Link>
@@ -69,7 +69,7 @@ const Header = () => {
         <>
           <Nav.Link href="#">Ưu Đãi</Nav.Link>
           <Nav.Link href="/feedback_review">Xem Đánh Giá</Nav.Link>
-          <Nav.Link href="#">Xem Tiệc Đã Đặt</Nav.Link>
+          <Nav.Link href="/booking_list">Xem Tiệc</Nav.Link>
           <Nav.Link href="/contact_list">Nhắn tin</Nav.Link>
           <NavDropdown
             title={<img src={user.avatar} alt="Avatar" className="avatar" />}
