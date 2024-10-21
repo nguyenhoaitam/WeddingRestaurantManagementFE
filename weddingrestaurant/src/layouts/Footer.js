@@ -18,7 +18,7 @@ const Footer = () => {
 
                 <div className="contact-info">
                   <h5>THÔNG TIN LIÊN HỆ</h5>
-                  <p>99 Nguyễn Hữu Thọ, P.Tân Hưng, Quận 7, TP.HCM</p>
+                  <p>99 Nguyễn Hữu Thọ, P.Tân Hưng, Quận 7, TP.HCM.</p>
                   <p>Điện thoại: 039 487 9999</p>
                   <p>Email: info.edenplace@gmail.com</p>
                 </div>

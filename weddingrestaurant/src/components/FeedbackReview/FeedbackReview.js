@@ -9,7 +9,7 @@ const FeedbackReview = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [booking, setBooking] = useState("")
 
   const fetchFeedbacks = async (pageNum) => {
     try {
@@ -44,6 +44,27 @@ const FeedbackReview = () => {
     }
   };
 
+  const fetchBookings = async () => {
+    try {
+      const res = await APIs.get(endpoints.booking)
+      setBooking(res.data)
+    }
+    catch (error) {
+      console.error("Lỗi khi tải dữ liệu: " + error)
+    }
+  }
+
+  useEffect(() => {
+    fetchBookings();
+  }, []);
+
+  const findNameById = (items, id) => {
+    if (!items || items.length === 0) return "Không tìm thấy";
+    const item = items.find((item) => item.id === id);
+    return item ? item.name : "Không tìm thấy";
+  };
+  
+
   return (
     <Container className="feedback-rv-container">
       <h2 className="text-center my-4">Đánh giá của khách hàng về tiệc</h2>
@@ -58,8 +79,8 @@ const FeedbackReview = () => {
                 <Card.Subtitle className="mb-2 text-muted">
                   Đánh giá: {feedback.rating}/5
                 </Card.Subtitle>
-                <Card.Text>{feedback.content}</Card.Text>
-                <Card.Text>Bữa tiệc: {feedback.wedding_booking}</Card.Text>
+                <Card.Text>Nội dung: {feedback.content}</Card.Text>
+                <Card.Text>Bữa tiệc: {findNameById(booking, feedback.wedding_booking)}</Card.Text>
                 <Card.Footer className="text-muted">
                   Ngày đánh giá: {formatDate(feedback.created_date)} || Cập nhật{" "}
                   {formatDate(feedback.updated_date)}

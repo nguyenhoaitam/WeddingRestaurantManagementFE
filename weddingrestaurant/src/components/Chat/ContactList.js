@@ -1,117 +1,148 @@
-// import React, { useState, useEffect, useContext } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { MyUserContext } from "../../configs/Contexts";
-// import "./ContactList.css";
-// import APIs, { endpoints } from "../../configs/APIs";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import "./ContactList.css";
+import APIs, { authApi, endpoints } from "../../configs/APIs";
 
-// const ContactList = () => {
-//   const [bookings, setBookings] = useState([]); // Đổi tên biến để phù hợp với đơn đặt tiệc
-//   const [filteredBookings, setFilteredBookings] = useState([]); // Đổi tên biến để phù hợp với đơn đặt tiệc
-//   const [loading, setLoading] = useState(true);
-//   const [isCustomer, setIsCustomer] = useState(false); // Thay đổi tên biến để phù hợp với vai trò
-//   const [searchQuery, setSearchQuery] = useState("");
-// //   const user = useContext(MyUserContext);
-//   const navigate = useNavigate();
-//   const [user, setUser] = useState();
+const ContactList = () => {
+  const [booking, setBooking] = useState([]);
+  const [filteredBooking, setFilteredBooking] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isCustomer, setIsCustomer] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState("");
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
 
-//     useEffect(()=> {
-//         const token = localStorage.getItem("token");
-//         const res = await APIs.get(endpoints.customer_booking(user.id), {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//     })
+  const fetchUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      setToken(token);
+      console.log("Token: ", token);
+      const userResponse = await authApi(token).get(endpoints["current_user"]);
+      console.log(userResponse.data);
+      setUser(userResponse.data);
+    } catch (error) {
+      console.error("Lỗi tải người dùng: ", error);
+    }
+  };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
-//   useEffect(() => {
-//     const fetchBookings = async () => {
-//       setLoading(true);
-      
-//       try {
-//         let response;
-//         if (user.user_role === "customer") {
-//           // Thay đổi kiểm tra vai trò
-//           response = await APIs.get(endpoints["customer_booking"](user.id)); // Thay đổi endpoint
-//         } else {
-//           response = await APIs.get(endpoints["staff_booking"](user.id)); // Thay đổi endpoint
-//         }
+  useEffect(() => {
+    const fetchBooking = async () => {
+      setLoading(true);
 
-//         if (response.data && Array.isArray(response.data)) {
-//           setBookings(response.data);
-//           setFilteredBookings(response.data);
-//         } else {
-//           setBookings([]);
-//           setFilteredBookings([]);
-//         }
-//       } catch (error) {
-//         console.error(error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
+      try {
+        let response;
 
-//     fetchBookings();
-//   }, [user.user_role, user.id]);
+        if (!user) {
+          setLoading(false);
+          return;
+        }
 
-//   useEffect(() => {
-//     setIsCustomer(user.user_role === "customer"); // Thay đổi tên biến để phù hợp với vai trò
-//   }, [user.user_role]);
+        if (user.user_role === "customer") {
+          if (user.customer) {
+            response = await APIs.get(endpoints.customer_booking(user.id), {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
 
-//   useEffect(() => {
-//     if (searchQuery === "") {
-//       setFilteredBookings(bookings);
-//     } else {
-//       setFilteredBookings(
-//         bookings.filter((item) =>
-//           item.name.toLowerCase().includes(searchQuery.toLowerCase())
-//         )
-//       );
-//     }
-//   }, [searchQuery, bookings]);
+            console.log("Booking: " + JSON.stringify(response.data));
+            if (response.data && !Array.isArray(response.data)) {
+              response.data = [response.data];
+            }
+          } else {
+            setLoading(false);
+            return;
+          }
+        } else {
+          response = await APIs.get(endpoints.staff_booking(user.id), {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        }
 
-//   const handleChat = (item) => {
-//     navigate(`/chat/${item.id}`); // Chuyển đến phòng chat dựa trên ID của đơn đặt tiệc
-//   };
+        if (response && response.data && Array.isArray(response.data)) {
+          setBooking(response.data);
+          setFilteredBooking(response.data);
+        } else {
+          setBooking([]);
+          setFilteredBooking([]);
+        }
+      } catch (error) {
+        console.error("Lỗi khi gọi API: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-//   if (loading) {
-//     return <div className="spinner">Loading...</div>;
-//   }
+    fetchBooking();
+  }, [user]);
 
-//   if (bookings.length === 0) {
-//     return (
-//       <div className="container">
-//         <div className="TopBackGround">
-//           <h2 className="greeting">CHAT</h2>
-//         </div>
-//         <p className="noDataText">Chưa có cuộc trò chuyện nào.</p>
-//       </div>
-//     );
-//   }
+  useEffect(() => {
+    setIsCustomer(user.user_role === "customer");
+  }, [user.user_role]);
 
-//   return (
-//     <div className="container">
-//       <div className="TopBackGround">
-//         <h2 className="greeting">CHAT</h2>
-//       </div>
-//       <input
-//         type="text"
-//         className="searchInput"
-//         placeholder="Tìm kiếm đơn đặt tiệc..."
-//         value={searchQuery}
-//         onChange={(e) => setSearchQuery(e.target.value)}
-//       />
-//       <div className="listContainer">
-//         {filteredBookings.map((item) => (
-//           <div key={item.id} className="chat">
-//             <button className="contactItem" onClick={() => handleChat(item)}>
-//               Đơn đặt tiệc {item.name}
-//             </button>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+  useEffect(() => {
+    if (searchQuery === "") {
+      setFilteredBooking(booking);
+    } else {
+      setFilteredBooking(
+        booking.filter((item) =>
+          item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      );
+    }
+  }, [searchQuery, booking]);
 
-// export default ContactList;
+  const handleChat = (item) => {
+    navigate(`/chat/${item.id}`);
+  };
+
+  if (loading) {
+    return <div className="spinner">Loading...</div>;
+  }
+
+  if (booking.length === 0) {
+    return (
+      <div className="contact-container">
+        <div className="TopBackGround">
+          <h2 className="greeting">CHAT</h2>
+        </div>
+        <p className="noDataText">Chưa có đoạn hội thoại nào.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="contact-container">
+      <div className="TopBackGround">
+        <h2 className="greeting">NHẮN TIN</h2>
+      </div>
+      <div className="group-contaier">
+        <input
+          type="text"
+          className="searchInput"
+          placeholder="Tìm kiếm nhóm..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <div className="listContainer">
+          {filteredBooking.map((item) => (
+            <div key={item.id} className="chat">
+              <button className="contactItem" onClick={() => handleChat(item)}>
+                Nhóm chat {item.name}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ContactList;

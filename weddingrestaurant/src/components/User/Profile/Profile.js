@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { MyDispatchContext, MyUserContext } from "../../../configs/Contexts";
 import "./Profile.css";
 import { authApi, endpoints } from "../../../configs/APIs";
+import { formatDate } from "../../Base/Base";
 
 const Profile = () => {
   const user = useContext(MyUserContext) || {};
@@ -56,15 +57,6 @@ const Profile = () => {
   const [updateError, setUpdateError] = useState("");
   const [modalError, setModalError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  };
 
   useEffect(() => {
     const fetchUserData = () => {

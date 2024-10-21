@@ -78,9 +78,11 @@ const Booking = () => {
             endpoints["current_user"]
           );
 
+          console.log(userResponse.data)
+
           setFormData((prevData) => ({
             ...prevData,
-            customer_id: userResponse.data.customer.user_id,
+            customer_id: userResponse.data.customer.user,
             customer_name: userResponse.data.customer.full_name,
             customer_phone: userResponse.data.phone,
             customer_email: userResponse.data.email,
@@ -181,8 +183,9 @@ const Booking = () => {
       `${endpoints["foods"]}?foodtype_id=${typeId}&page=1`
     );
     setTotalFoodItems(response.data.count);
-    setFoods(response.data.results);
+    setFoods([...foods, ...response.data.results]);
     calculateTotalPrice(formData.selectedFoods, "selectedFoods");
+    console.log(foods)
   };
 
   const loadMoreFoods = async () => {
@@ -340,6 +343,8 @@ const Booking = () => {
     };
 
     // localStorage.setItem("bookingFormData", JSON.stringify(formData));
+
+    console.log(bookingData)
 
     navigate("/payment", {
       state: {
